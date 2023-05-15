@@ -48,15 +48,6 @@ main() {
   __exec "$AWS_CMD" "${eks_config_args[@]}" ||
     return $?
 
-  ## Login Helm registry
-  local ecr_login_args=() helm_login_args=()
-  ecr_login_args+=(ecr get-login-password)
-  helm_login_args+=(registry login)
-  helm_login_args+=(--username AWS --password-stdin)
-  helm_login_args+=("$_AWS_ECR_REGISTRY")
-  __exec "$AWS_CMD" "${ecr_login_args[@]}" | helm "${helm_login_args[@]}" ||
-    return $?
-
   ## Pass values from config.json file
   local schema chart_name chart_version release_name chart values_name namespace
   schema="$(__config_get "schema" \
