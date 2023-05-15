@@ -12,6 +12,7 @@ _DRYRUN="${DRYRUN:-}"
 
 _WORKDIR="${WORKDIR:-$PWD}"
 _CHART_VERSION="${CHART_VERSION:-}"
+_AWS_REGION="${AWS_REGION:?}"
 _APP_NAME="${APP_NAME:?}"
 _APP_VERSION="${APP_VERSION:-}"
 _ENVIRONMENT="${ENVIRONMENT:?}"
@@ -38,6 +39,7 @@ main() {
   local aws_args=()
   aws_args+=(eks update-kubeconfig)
   aws_args+=(--name "$_EKS_CLUSTER_NAME")
+  aws_args+=(--region "$_AWS_REGION")
 
   __exec "$AWS_CMD" "${aws_args[@]}" || return $?
 
