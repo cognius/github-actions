@@ -1,12 +1,12 @@
-name: Notification
-description: send notify to Slack
+name: Deploy notify
+description: send deploy status to Slack
 author: Kamontat Chantrachirathumrong
 
 runs:
   using: "composite"
   steps:
     - name: Send message to slack
-      run: $GITHUB_ACTION_PATH/notification.sh
+      run: $GITHUB_ACTION_PATH/deploy-notify.sh
       shell: bash
       env:
         GIT_REPO: ${{ github.repository }}

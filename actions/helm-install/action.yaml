@@ -1,0 +1,10 @@
+name: Helm install
+description: install helm-charts using config.json
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - name: deploy
+      run: $GITHUB_ACTION_PATH/helm-install.sh
+      shell: bash

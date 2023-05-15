@@ -1,5 +1,5 @@
-name: Release new version
-description: tag and release new version in github
+name: Create version
+description: tag and create new version in github
 author: Kamontat Chantrachirathumrong
 
 runs:
@@ -26,12 +26,6 @@ runs:
       shell: bash
       run: |
         git-chglog --version
-    - name: release new version
-      run: $GITHUB_ACTION_PATH/release.sh
+    - name: create new version
+      run: $GITHUB_ACTION_PATH/create-version.sh
       shell: bash
-      env:
-        GIT_REPO: ${{ github.repository }}
-        GIT_REF: ${{ github.ref_name }}
-        GIT_AUTHOR: ${{ github.actor }}
-        GIT_COMMIT: ${{ github.sha }}
-        GITHUB_ACTION_ID: ${{ github.run_id }}
