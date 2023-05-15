@@ -6,7 +6,7 @@ runs:
   using: "composite"
   steps:
     - name: Send message to slack
-      run: $GITHUB_ACTION_PATH/deploy-notify.sh
+      run: $GITHUB_ACTION_PATH/notify-deploy.sh
       shell: bash
       env:
         GIT_REPO: ${{ github.repository }}

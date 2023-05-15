@@ -2,6 +2,7 @@
 
 type="${NOTIFY_TYPE:?}"
 step="${NOTIFY_STEP:?}"
+enabled="${NOTIFY_ENABLED:-true}"
 component="${COMPONENT:?}"
 env="${ENVIRONMENT:?}"
 webhook="${SLACK_WEBHOOK:?}"
@@ -20,6 +21,12 @@ gh_action_url="https://github.com/$git_repo/actions/runs/$gh_id"
 
 gh_commit_link="<$gh_commit_url|$git_ref>"
 gh_action_link="<$gh_action_url|$gh_id>"
+
+if test -z "$enabled" ||
+  [[ "$enabled" == false ]]; then
+  printf "disable notification\n"
+  exit 0
+fi
 
 message=""
 case "$type" in
