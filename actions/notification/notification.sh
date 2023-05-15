@@ -26,9 +26,9 @@ case "$type" in
 start)
   [[ "$env" == "production" ]] && [[ "$git_ref" != "main" ]] &&
     message+="<!here> "
-  message+="**$git_author** starting $mode \`${component}[$version]\`"
+  message+="*$git_author* starting $mode \`${component}[$version]\`"
   message+=" from $gh_commit_link"
-  message+=" to **$env**"
+  message+=" to *$env*"
   message+=" ($gh_action_link)"
   ;;
 error)
@@ -38,13 +38,13 @@ error)
 success)
   message+="Finished **$step** successfully ($gh_action_link):
   "
-  message+="**Component name**: $component
+  message+="*Component name*: $component
   "
-  message+="**Environment**: $env
+  message+="*Environment*: $env
   "
-  message+="**Version**: $version
+  message+="*Version*: $version
   "
-  message+="**Reference**: $gh_commit_link"
+  message+="*Reference*: $gh_commit_link"
   ;;
 esac
 
