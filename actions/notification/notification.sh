@@ -45,12 +45,13 @@ success)
   message+="**Version**: $version
   "
   message+="**Reference**: $gh_commit_link"
+  ;;
 esac
 
 printf "sending message: %s\n" "$message"
 if test -n "$message"; then
-  curl \
-    -X POST \
-    --data-urlencode "payload={\"text\": \"$message\"}" \
+  curl -X POST \
+    -H 'Content-type: application/json' \
+    --data "{\"text\":\"$message\"}" \
     "$webhook"
 fi
