@@ -9,6 +9,7 @@ CONFIG_FILE="config.json"
 VALUES_FILE="values.yaml"
 
 _DRYRUN="${DRYRUN:-}"
+_DEBUG="${DEBUG:-}"
 
 _WORKDIR="${WORKDIR:-$PWD}"
 _CHART_VERSION="${CHART_VERSION:-}"
@@ -40,6 +41,8 @@ main() {
   aws_args+=(eks update-kubeconfig)
   aws_args+=(--name "$_EKS_CLUSTER_NAME")
   aws_args+=(--region "$_AWS_REGION")
+  test -n "$_DEBUG" &&
+    aws_args+=(--debug)
 
   __exec "$AWS_CMD" "${aws_args[@]}" || return $?
 
