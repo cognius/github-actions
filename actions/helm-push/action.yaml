@@ -1,0 +1,13 @@
+name: helm-push
+description: push helm chart to ECR (OCI registry)
+
+runs:
+  using: "composite"
+  steps:
+    - name: Release charts
+      uses: helm/chart-releaser-action@v1.5.0
+      env:
+        CR_TOKEN: "${{ env.GITHUB_TOKEN }}"
+    - name: Publish charts
+      shell: bash
+      run: $GITHUB_ACTION_PATH/publish.sh
