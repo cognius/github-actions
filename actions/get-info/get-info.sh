@@ -87,7 +87,7 @@ get_docker_file() {
 _set_output() {
   local key="$1" value="$2"
 
-  printf "%-20s : '%s'" "$key" "$value"
+  printf "%-20s : '%s'\n" "$key" "$value"
   echo "$key=$value" >>"${GITHUB_OUTPUT:?}"
 }
 
