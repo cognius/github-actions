@@ -14,6 +14,7 @@ _DEBUG="${DEBUG:-}"
 _WORKDIR="${WORKDIR:-$PWD}"
 _CHART_VERSION="${CHART_VERSION:-}"
 _AWS_REGION="${AWS_REGION:?}"
+_AWS_ECR_REGISTRY="${AWS_ECR_REGISTRY:?}"
 _APP_NAME="${APP_NAME:?}"
 _APP_VERSION="${APP_VERSION:-}"
 _ENVIRONMENT="${ENVIRONMENT:?}"
@@ -37,15 +38,26 @@ main() {
     __error "missing '%s' from '%s'" \
       "$CONFIG_FILE" "$_APP_NAME"
 
-  local aws_args=()
-  aws_args+=(eks update-kubeconfig)
-  aws_args+=(--name "$_EKS_CLUSTER_NAME")
-  aws_args+=(--region "$_AWS_REGION")
+  ## Login AWS
+  local eks_config_args=()
+  eks_config_args+=(eks update-kubeconfig)
+  eks_config_args+=(--name "$_EKS_CLUSTER_NAME")
+  eks_config_args+=(--region "$_AWS_REGION")
   test -n "$_DEBUG" &&
-    aws_args+=(--debug)
+    eks_config_args+=(--debug)
+  __exec "$AWS_CMD" "${eks_config_args[@]}" ||
+    return $?
 
-  __exec "$AWS_CMD" "${aws_args[@]}" || return $?
+  ## Login Helm registry
+  local ecr_login_args=() helm_login_args=()
+  ecr_login_args+=(ecr get-login-password)
+  helm_login_args+=(registry login)
+  helm_login_args+=(--username AWS --password-stdin)
+  helm_login_args+=("$_AWS_ECR_REGISTRY")
+  __exec "$AWS_CMD" "${ecr_login_args[@]}" | helm "${helm_login_args[@]}" ||
+    return $?
 
+  ## Pass values from config.json file
   local schema chart_name chart_version release_name chart values_name namespace
   schema="$(__config_get "schema" \
     ".schema" "$conf_path" "oci")"
@@ -60,15 +72,15 @@ main() {
   values_name="$(__config_get "valuesName" \
     ".environments.$_ENVIRONMENT.values" "$conf_path")"
   chart="$(__chart_build "$schema" "$chart_name")"
-
+  ## If values.yaml not found, throw error
   test -f "$app_path/$values_name" ||
     __error "missing values ('%s') to deploy on %s environment" \
       "$values_name" "$_ENVIRONMENT"
-
   ## If override chart version exist, override current value
   test -n "$_CHART_VERSION" &&
     chart_version="$_CHART_VERSION"
 
+  ## Run helm upgrade or install new chart
   local helm_args=()
   helm_args+=(upgrade --install)
   helm_args+=(--wait --debug --atomic)
@@ -81,8 +93,8 @@ main() {
   helm_args+=(--version "$chart_version")
   test -n "$_APP_VERSION" &&
     helm_args+=(--set "image.tag=$_APP_VERSION")
-
-  __exec "$HELM_CMD" "${helm_args[@]}" || return $?
+  __exec "$HELM_CMD" "${helm_args[@]}" ||
+    return $?
 }
 
 clean() {
@@ -98,7 +110,9 @@ clean() {
     _APP_VERSION \
     _ENVIRONMENT \
     _EKS_CLUSTER_NAME \
-    _HELM_TIMEOUT
+    _HELM_TIMEOUT \
+    _AWS_REGION \
+    _AWS_ECR_REGISTRY
 }
 
 __error() {
