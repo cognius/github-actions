@@ -36,7 +36,7 @@ error)
   message+=", please check $gh_action_link"
   ;;
 success)
-  message+="Finished **$step** successfully ($gh_action_link):
+  message+="Finished *$step* successfully ($gh_action_link):
   "
   message+="*Component name*: $component
   "
