@@ -55,7 +55,7 @@ main() {
   chart_name="$(__config_get "chartName" \
     ".chart" "$conf_path")"
   chart_version="$(__config_get "chartVersion" \
-    ".chartVersion" "$conf_path" "$_CHART_VERSION")"
+    ".chartVersion" "$conf_path" "latest")"
   release_name="$(__config_get "releaseName" \
     ".name" "$conf_path")"
   namespace="$(__config_get "namespace" \
@@ -81,7 +81,8 @@ main() {
   helm_args+=(--values "$app_path/$values_name")
   helm_args+=(--timeout "$_HELM_TIMEOUT")
   helm_args+=("$release_name" "$chart")
-  helm_args+=(--version "$chart_version")
+  [[ "$chart_version" != "latest" ]] &&
+    helm_args+=(--version "$chart_version")
   test -n "$_APP_VERSION" &&
     helm_args+=(--set "image.tag=$_APP_VERSION")
   __exec "$HELM_CMD" "${helm_args[@]}" ||
