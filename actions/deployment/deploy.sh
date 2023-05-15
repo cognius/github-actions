@@ -11,6 +11,7 @@ VALUES_FILE="values.yaml"
 _DRYRUN="${DRYRUN:-}"
 
 _WORKDIR="${WORKDIR:-$PWD}"
+_CHART_VERSION="${CHART_VERSION:-}"
 _APP_NAME="${APP_NAME:?}"
 _APP_VERSION="${APP_VERSION:-}"
 _ENVIRONMENT="${ENVIRONMENT:?}"
@@ -46,7 +47,7 @@ main() {
   chart_name="$(__config_get "chartName" \
     ".chart" "$conf_path")"
   chart_version="$(__config_get "chartVersion" \
-    ".chartVersion" "$conf_path")"
+    ".chartVersion" "$conf_path" "$_CHART_VERSION")"
   release_name="$(__config_get "releaseName" \
     ".name" "$conf_path")"
   namespace="$(__config_get "namespace" \
@@ -58,6 +59,10 @@ main() {
   test -f "$app_path/$values_name" ||
     __error "missing values ('%s') to deploy on %s environment" \
       "$values_name" "$_ENVIRONMENT"
+
+  ## If override chart version exist, override current value
+  test -n "$_CHART_VERSION" &&
+    chart_version="$_CHART_VERSION"
 
   local helm_args=()
   helm_args+=(upgrade --install)
