@@ -13,14 +13,14 @@ root_path="$PWD"
 ######################################
 
 main() {
-  _set_env "app-path" "$(get_app_path)"
-  _set_env "version" "$(get_releaser version)"
-  _set_env "git-tag" "$(get_releaser full-version)"
-  _set_env "mode" "$(get_releaser mode)"
+  _set_output "app-path" "$(get_app_path)"
+  _set_output "version" "$(get_releaser version)"
+  _set_output "git-tag" "$(get_releaser full-version)"
+  _set_output "mode" "$(get_releaser mode)"
 
-  _set_env "docker-image" "$(get_docker_image)"
-  _set_env "docker-context" "$(get_docker_context)"
-  _set_env "docker-file" "$(get_docker_file)"
+  _set_output "docker-image" "$(get_docker_image)"
+  _set_output "docker-context" "$(get_docker_context)"
+  _set_output "docker-file" "$(get_docker_file)"
 }
 
 get_app_path() {
@@ -84,8 +84,11 @@ get_docker_file() {
   printf "%s/%s" "$app_path" "$filename"
 }
 
-_set_env() {
-  echo "$1=$2"
+_set_output() {
+  local key="$1" value="$2"
+
+  echo "[OUT] value of '$key' is '$value'"
+  echo "$key=$value" >>"${GITHUB_OUTPUT:?}"
 }
 
 main

@@ -30,5 +30,5 @@ runs:
   steps:
     - id: default
       name: Get information
-      run: $GITHUB_ACTION_PATH/get-info.sh >> $GITHUB_OUTPUT
+      run: $GITHUB_ACTION_PATH/get-info.sh
       shell: bash
