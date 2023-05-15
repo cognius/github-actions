@@ -1,0 +1,21 @@
+name: send slack message
+description: send message to slack via webhook
+author: Kamontat Chantrachirathumrong
+
+inputs:
+  webhook:
+    description: slack webhook url
+    required: true
+  message:
+    description: slack message
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Send message to slack
+      run: $GITHUB_ACTION_PATH/send-slack.sh
+      shell: bash
+      env:
+        WEBHOOK_URL: ${{ inputs.webhook }}
+        MESSAGE_TEXT: ${{ inputs.message }}

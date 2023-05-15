@@ -1,0 +1,30 @@
+name: Get values.yaml
+description: get values based from environment
+author: Kamontat Chantrachirathumrong
+
+inputs:
+  environment:
+    description: environment name
+    required: true
+  helm-directory:
+    description: helm chart directory, must contains values.yaml
+    required: true
+
+outputs:
+  values-path:
+    description: values.yaml file based from input environment
+    value: ${{ steps.default.outputs.values-path }}
+  helm-directory:
+    description: helm chart directory, must contains values.yaml
+    value: ${{ steps.default.outputs.helm-directory }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: default
+      name: Get values.yaml
+      run: $GITHUB_ACTION_PATH/get-values.sh >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+        HELM_DIRECTORY: ${{ inputs.helm-directory }}
