@@ -18,7 +18,7 @@ get_mode() {
   local version
 
   if test -n "$override"; then
-    version="$(_build_version "$app" "$override")"
+    version="$(_build_override_version "$app" "$override")"
   else
     version="$(_current_version "$app")"
   fi
@@ -32,21 +32,22 @@ get_mode() {
 }
 
 get_version() {
-  local app="$1" tag="$2"
+  local app="$1" override="$2"
   local full_version
-  full_version="$(get_full_version "$app" "$tag")"
+  full_version="$(get_full_version "$app" "$override")"
   printf "%s" "${full_version##*"$__VERSION_APP_SEP"}"
 }
 
 get_full_version() {
-  local app="$1" tag="$2"
+  local app="$1" override="$2"
 
-  if test -n "$tag"; then
+  if test -n "$override"; then
     _debug "result" "using override tag"
-    _build_version "$app" "$tag"
+    _build_override_version "$app" "$override"
     return 0
   fi
 
+  local tag
   tag="$(_current_version "$app")"
   if test -n "$tag"; then
     _debug "result" "using old tag"
@@ -163,6 +164,13 @@ _build_version() {
   fi
 
   printf "%s" "$output"
+}
+
+## build override version string with app name
+## _build_override_version "$app" "v1.0.0" => app/v1.0.0
+_build_override_version() {
+  local app="$1" override="$2"
+  printf "%s%s%s" "$app" "$__VERSION_APP_SEP" "$override"
 }
 
 ## Check input tag version exist or not

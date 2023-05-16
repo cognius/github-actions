@@ -46,7 +46,7 @@ get_releaser() {
   local input="$1" tag="$override_tag"
   if test -z "$tag" &&
     [[ "$env" != "production" ]]; then
-    tag="$(git rev-parse --short HEAD)"
+    tag="sha-$(git rev-parse --short HEAD)"
   fi
 
   $releaser "$input" "$component" "$tag"
