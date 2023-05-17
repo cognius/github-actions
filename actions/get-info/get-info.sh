@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
 component="${COMPONENT:?}"
+components_path="${COMPONENTS_PATH:-}"
 env="${ENVIRONMENT:?}"
 override_tag="${OVERRIDE_TAG:-}"
+
+contexts_path="${CONTEXTS_PATH:-}"
 image_prefix="${IMAGE_PREFIX:-}"
+
+dockerfiles_path="${DOCKERFILES_PATH:-}"
 
 ## Set by Github Action
 action_path="${GITHUB_ACTION_PATH:?}"
 ## Set by bash
-root_path="$PWD"
+root_path="${ROOT_WD:-$PWD}"
 
 ######################################
 
@@ -24,19 +29,17 @@ main() {
 }
 
 get_app_path() {
-  local path=""
-  case "$component" in
-  "gst") path="golang/app/sumato-gst" ;;
-  "refresher" | "updater")
-    path="golang/app/$component"
-    ;;
-  "db-deployment")
-    path="db-deployment"
-    ;;
-  *)
-    path="java/$component"
-    ;;
-  esac
+  local name value raw
+  local path="$component"
+  for raw in ${components_path//,/ }; do
+    name="${raw%%=*}"
+    value="${raw##*=}"
+
+    if [[ "$name" == "$component" ]]; then
+      path="$value"
+      break
+    fi
+  done
 
   printf "%s/%s" "$root_path" "$path"
 }
@@ -61,27 +64,39 @@ get_docker_image() {
 }
 
 get_docker_context() {
-  local context="$root_path"
-  case "$component" in
-  "db-deployment")
-    context="$root_path/db-deployment"
-    ;;
-  esac
-  printf "%s" "$context"
+  local name value raw
+  local path=""
+  for raw in ${contexts_path//,/ }; do
+    name="${raw%%=*}"
+    value="${raw##*=}"
+
+    if [[ "$name" == "$component" ]]; then
+      path="$value"
+      break
+    fi
+  done
+
+  if test -n "$path"; then
+    printf "%s/%s" "$root_path" "$path"
+  else
+    printf "%s" "$root_path"
+  fi
 }
 
 get_docker_file() {
-  local app_path
-  app_path="$(get_app_path)"
+  local name value raw
+  local path="Dockerfile"
+  for raw in ${dockerfiles_path//,/ }; do
+    name="${raw%%=*}"
+    value="${raw##*=}"
 
-  local filename="Dockerfile"
-  case "$component" in
-  "db-deployment")
-    filename="Dockerfile-sumatodb"
-    ;;
-  esac
+    if [[ "$name" == "$component" ]]; then
+      path="$value"
+      break
+    fi
+  done
 
-  printf "%s/%s" "$app_path" "$filename"
+  printf "%s/%s" "$(get_app_path)" "$path"
 }
 
 _set_output() {
