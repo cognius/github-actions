@@ -10,6 +10,7 @@ VALUES_FILE="values.yaml"
 
 _DRYRUN="${DRYRUN:-}"
 _DEBUG="${DEBUG:-}"
+_FORCE="${FORCE:-}"
 
 _WORKDIR="${WORKDIR:-$PWD}"
 _CHART_VERSION="${CHART_VERSION:-}"
@@ -74,6 +75,8 @@ main() {
   ## Run helm upgrade or install new chart
   local helm_args=()
   helm_args+=(upgrade --install)
+  test -n "$_FORCE" &&
+    helm_args+=(--force)
   helm_args+=(--wait --debug --atomic)
   helm_args+=(--namespace "$namespace")
   test -f "$app_path/$VALUES_FILE" &&
@@ -97,6 +100,8 @@ clean() {
     VALUES_FILE
 
   unset _DRYRUN \
+    _DEBUG \
+    _FORCE \
     _WORKDIR \
     _APP_NAME \
     _APP_VERSION \
