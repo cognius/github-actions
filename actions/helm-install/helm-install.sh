@@ -65,8 +65,8 @@ main() {
   chart="$(__chart_build "$schema" "$chart_name")"
   ## If values.yaml not found, throw error
   test -f "$app_path/$values_name" ||
-    __error "missing values ('%s') to deploy on %s environment" \
-      "$values_name" "$_ENVIRONMENT"
+    __error "cannot deploy '%s' file not found ('%s')" \
+      "$_ENVIRONMENT" "$app_path/$values_name"
   ## If override chart version exist, override current value
   test -n "$_CHART_VERSION" &&
     chart_version="$_CHART_VERSION"
