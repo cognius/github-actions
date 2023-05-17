@@ -78,8 +78,7 @@ main() {
     local helm_uninstall_args=(uninstall "$release_name")
     helm_uninstall_args+=(--wait --debug --timeout "$_HELM_TIMEOUT")
     helm_uninstall_args+=(--namespace "$namespace")
-    __exec "$HELM_CMD" "${helm_uninstall_args[@]}" ||
-      return $?
+    __exec "$HELM_CMD" "${helm_uninstall_args[@]}"
   fi
 
   ## Run helm upgrade or install new chart
