@@ -64,11 +64,15 @@ main() {
     ".environments.$_ENVIRONMENT.namespace" "$conf_path")"
   values_name="$(__config_get "valuesName" \
     ".environments.$_ENVIRONMENT.values" "$conf_path")"
+  values_name="$(__config_get "valuesName" \
+    ".environments.$_ENVIRONMENT.values" "$conf_path")"
   chart="$(__chart_build "$schema" "$chart_name")"
+
+  local values_path="$app_path/$values_name"
   ## If values.yaml not found, throw error
-  test -f "$app_path/$values_name" ||
+  test -f "$values_path" ||
     __error "cannot deploy '%s' file not found ('%s')" \
-      "$_ENVIRONMENT" "$app_path/$values_name"
+      "$_ENVIRONMENT" "$values_path"
   ## If override chart version exist, override current value
   test -n "$_CHART_VERSION" &&
     chart_version="$_CHART_VERSION"
@@ -81,6 +85,13 @@ main() {
     __exec "$HELM_CMD" "${helm_uninstall_args[@]}"
   fi
 
+  ## Parse values file if it's extension is .tpl
+  if [[ "$values_name" =~ \.tpl$ ]]; then
+    local new_values_path="/tmp/values.yaml"
+    __parse_value "$(cat "$values_path")" >"$new_values_path"
+    values_path="$new_values_path"
+  fi
+
   ## Run helm upgrade or install new chart
   local helm_args=()
   helm_args+=(upgrade --install)
@@ -90,7 +101,7 @@ main() {
   helm_args+=(--namespace "$namespace")
   test -f "$app_path/$VALUES_FILE" &&
     helm_args+=(--values "$app_path/$VALUES_FILE")
-  helm_args+=(--values "$app_path/$values_name")
+  helm_args+=(--values "$values_path")
   helm_args+=(--timeout "$_HELM_TIMEOUT")
   helm_args+=("$release_name" "$chart")
   [[ "$chart_version" != "latest" ]] &&
