@@ -10,6 +10,7 @@ VALUES_FILE="values.yaml"
 
 _DRYRUN="${DRYRUN:-}"
 _DEBUG="${DEBUG:-}"
+_RECREATE="${RECREATE:-}"
 _FORCE="${FORCE:-}"
 
 _WORKDIR="${WORKDIR:-$PWD}"
@@ -71,6 +72,15 @@ main() {
   ## If override chart version exist, override current value
   test -n "$_CHART_VERSION" &&
     chart_version="$_CHART_VERSION"
+
+  ## If recreate is enabled, uninstall old chart before install new one
+  if test -n "$_RECREATE"; then
+    local helm_uninstall_args=(uninstall "$release_name")
+    helm_uninstall_args+=(--wait --debug --timeout "$_HELM_TIMEOUT")
+    helm_uninstall_args+=(--namespace "$namespace")
+    __exec "$HELM_CMD" "${helm_uninstall_args[@]}" ||
+      return $?
+  fi
 
   ## Run helm upgrade or install new chart
   local helm_args=()
