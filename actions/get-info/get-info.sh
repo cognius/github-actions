@@ -31,15 +31,18 @@ main() {
 get_app_path() {
   local name value raw
   local path="$component"
-  for raw in ${components_path//,/ }; do
-    name="${raw%%=*}"
-    value="${raw##*=}"
-
-    if [[ "$name" == "$component" ]]; then
-      path="$value"
-      break
-    fi
-  done
+  if test -n "$components_path"; then
+    # shellcheck disable=SC2206
+    repo=($components_path)
+    for raw in "${repo[@]}"; do
+      name="${raw%%=*}"
+      value="${raw##*=}"
+      if [[ "$name" == "$component" ]]; then
+        path="$value"
+        break
+      fi
+    done
+  fi
 
   printf "%s/%s" "$root_path" "$path"
 }
@@ -66,15 +69,18 @@ get_docker_image() {
 get_docker_context() {
   local name value raw
   local path=""
-  for raw in ${contexts_path//,/ }; do
-    name="${raw%%=*}"
-    value="${raw##*=}"
-
-    if [[ "$name" == "$component" ]]; then
-      path="$value"
-      break
-    fi
-  done
+  if test -n "$contexts_path"; then
+    # shellcheck disable=SC2206
+    repo=($contexts_path)
+    for raw in "${repo[@]}"; do
+      name="${raw%%=*}"
+      value="${raw##*=}"
+      if [[ "$name" == "$component" ]]; then
+        path="$value"
+        break
+      fi
+    done
+  fi
 
   if test -n "$path"; then
     printf "%s/%s" "$root_path" "$path"
@@ -86,15 +92,18 @@ get_docker_context() {
 get_docker_file() {
   local name value raw
   local path="Dockerfile"
-  for raw in ${dockerfiles_path//,/ }; do
-    name="${raw%%=*}"
-    value="${raw##*=}"
-
-    if [[ "$name" == "$component" ]]; then
-      path="$value"
-      break
-    fi
-  done
+  if test -n "$dockerfiles_path"; then
+    # shellcheck disable=SC2206
+    repo=($dockerfiles_path)
+    for raw in "${repo[@]}"; do
+      name="${raw%%=*}"
+      value="${raw##*=}"
+      if [[ "$name" == "$component" ]]; then
+        path="$value"
+        break
+      fi
+    done
+  fi
 
   printf "%s/%s" "$(get_app_path)" "$path"
 }
