@@ -22,6 +22,7 @@ _APP_VERSION="${APP_VERSION:-}"
 _ENVIRONMENT="${ENVIRONMENT:?}"
 _EKS_CLUSTER_NAME="${EKS_CLUSTER_NAME:?}"
 _HELM_TIMEOUT="${HELM_TIMEOUT:-5m}"
+_AUTO_ENV="${AUTO_ENV:-}"
 
 validate() {
   ## jq: json query cli (default in github action)
@@ -80,7 +81,9 @@ main() {
   ## If recreate is enabled, uninstall old chart before install new one
   if test -n "$_RECREATE"; then
     local helm_uninstall_args=(uninstall "$release_name")
-    helm_uninstall_args+=(--wait --debug --timeout "$_HELM_TIMEOUT")
+    helm_uninstall_args+=(--wait --timeout "$_HELM_TIMEOUT")
+    test -n "$_DEBUG" &&
+      helm_uninstall_args+=(--debug)
     helm_uninstall_args+=(--namespace "$namespace")
     __exec "$HELM_CMD" "${helm_uninstall_args[@]}"
   fi
@@ -97,7 +100,9 @@ main() {
   helm_args+=(upgrade --install)
   test -n "$_FORCE" &&
     helm_args+=(--force)
-  helm_args+=(--wait --debug --atomic)
+  helm_args+=(--wait --atomic)
+  test -n "$_DEBUG" &&
+    helm_args+=(--debug)
   helm_args+=(--namespace "$namespace")
   test -f "$app_path/$VALUES_FILE" &&
     helm_args+=(--values "$app_path/$VALUES_FILE")
