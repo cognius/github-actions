@@ -38,7 +38,7 @@ start)
   message+=" to *$env*"
   message+=" ($gh_action_link)"
   ;;
-error)
+error | failure)
   message+="<!here> Finished **$step** with \`error\`"
   message+=", please check $gh_action_link"
   ;;
