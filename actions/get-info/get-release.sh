@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
-## $ get-release.sh mode
+## $ get-release.sh mode [app-name] [override]
 ##          => "deploy" | "redeploy"
-## $ get-release.sh full-version app-name [override]
-##          => "app-name/<version>"
-## $ get-release.sh version app-name [override]
-##          => "<version>"
+## $ get-release.sh full-version [app-name] [override]
+##          => "app-name/<version>" (version is semver compliance)
+## $ get-release.sh version [app-name] [override]
+##          => "<version>" (version is semver compliance)
 
 __VERSION_APP_SEP="/"
 __VERSION_PREFIX="v"
 __VERSION_SEP="."
 __VERSION_MAX_INDEX=99
-__VERSION_TIMESTAMP="%Y%m%d"
+__VERSION_TIMESTAMP="%y.%m.%d"
 
 get_mode() {
   local app="$1" override="$2"
   local version
 
   if test -n "$override"; then
-    version="$(_build_override_version "$app" "$override")"
+    version="$override"
   else
     version="$(_current_version "$app")"
   fi
@@ -43,7 +43,7 @@ get_full_version() {
 
   if test -n "$override"; then
     _debug "result" "using override tag"
-    _build_override_version "$app" "$override"
+    printf "%s" "$override"
     return 0
   fi
 
@@ -68,18 +68,21 @@ main() {
   ## action = mode | full-version | version
   local action="$1" app="$2" version="$3"
 
+  local override
+  override="$(_build_override_version "$app" "$version")"
+  _debug "override version" "$override"
   case "$action" in
   m | mode)
     _debug "action name" "mode"
-    get_mode "$app" "$version"
+    get_mode "$app" "$override"
     ;;
   v | version)
     _debug "action name" "version"
-    get_version "$app" "$version"
+    get_version "$app" "$override"
     ;;
   fv | full-version)
     _debug "action name" "full-version"
-    get_full_version "$app" "$version"
+    get_full_version "$app" "$override"
     ;;
   esac
 }
@@ -91,7 +94,7 @@ _debug() {
   if test -n "$DEBUG"; then
     local title="$1"
     shift 1
-    printf "%-15s: %s\n" "$title" "$*" >&2
+    printf "%-20s: %s\n" "$title" "$*" >&2
   fi
 }
 
@@ -108,7 +111,7 @@ _generate_version() {
       exit 2
     fi
 
-    tag="$(_build_version "$app" "$timestamp" "$index")"
+    tag="$(_build_version "$app" "$timestamp" "+$index")"
     _debug "check version" "$tag"
 
     if ! _has_version "$tag"; then
@@ -140,16 +143,13 @@ _build_version() {
   local app="$1" output
   shift
 
-  local inputs=("$@")
-  for input in "${inputs[@]}"; do
-    if [[ "$input" =~ $__VERSION_APP_SEP ]]; then
-      output="${inputs[*]}"
-      printf "%s" "${output// /}"
-      return 0
-    fi
-
+  for input in "$@"; do
     if test -n "$output"; then
-      output="$output$__VERSION_SEP$input"
+      if [[ "$input" =~ ^[+-] ]]; then
+        output="$output$input"
+      else
+        output="$output$__VERSION_SEP$input"
+      fi
     else
       if [[ "$input" =~ ^$__VERSION_PREFIX ]]; then
         output="$input"
@@ -170,7 +170,19 @@ _build_version() {
 ## _build_override_version "$app" "v1.0.0" => app/v1.0.0
 _build_override_version() {
   local app="$1" override="$2"
-  printf "%s%s%s" "$app" "$__VERSION_APP_SEP" "$override"
+  if test -z "$override"; then
+    return 0
+  fi
+
+  if ! [[ "$override" =~ ^$__VERSION_PREFIX ]]; then
+    override="$__VERSION_PREFIX$override"
+  fi
+
+  if test -n "$app"; then
+    printf "%s%s%s" "$app" "$__VERSION_APP_SEP" "$override"
+  else
+    printf "%s" "$override"
+  fi
 }
 
 ## Check input tag version exist or not
