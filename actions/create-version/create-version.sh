@@ -8,7 +8,9 @@ __note="/tmp/RELEASE_NOTE.md"
 
 _exec() {
   printf "$ %s\n" "$*"
-  "$@"
+  if test -z "$DRY_RUN"; then
+    "$@"
+  fi
 }
 
 ## Create git tag on local
