@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
 
-component="${COMPONENT:?}"
-components_path="${COMPONENTS_PATH:-}"
-env="${ENVIRONMENT:?}"
-override_tag="${OVERRIDE_TAG:-}"
+_environment="${ENVIRONMENT:?}"
+_app_name="${APP_NAME:-${COMPONENT:?}}"
 
-contexts_path="${CONTEXTS_PATH:-}"
-image_prefix="${IMAGE_PREFIX:-}"
+_image_prefix="${IMAGE_PREFIX:-}"
+_image_tag="${IMAGE_TAG:-$OVERRIDE_TAG}"
 
-dockerfiles_path="${DOCKERFILES_PATH:-}"
+# All paths are configs as `<key>=<value>` and separated by newline
+_app_paths="${APP_PATHS:-$COMPONENTS_PATH}"
+_df_paths="${DOCKERFILE_PATHS:-$DOCKERFILES_PATH}"
+_context_paths="${CONTEXT_PATHS:-$CONTEXTS_PATH}"
 
 ## Set by Github Action
-action_path="${GITHUB_ACTION_PATH:?}"
+_action_path="${GITHUB_ACTION_PATH:?}"
 ## Set by bash
-root_path="${ROOT_WD:-$PWD}"
+_root_path="${ROOT_WD:-$PWD}"
 
 ######################################
 
 main() {
+  _set_output "app-name" "$_app_name"
   _set_output "app-path" "$(get_app_path)"
+  _set_output "environment" "$_environment"
   _set_output "version" "$(get_releaser version)"
   _set_output "git-tag" "$(get_releaser full-version)"
   _set_output "mode" "$(get_releaser mode)"
@@ -29,53 +32,50 @@ main() {
 }
 
 get_app_path() {
-  local name value raw
-  local path="$component"
-  if test -n "$components_path"; then
+  local name value raw repo
+  local path="$_app_name"
+  if test -n "$_app_paths"; then
     # shellcheck disable=SC2206
-    repo=($components_path)
+    repo=($_app_paths)
     for raw in "${repo[@]}"; do
       name="${raw%%=*}"
       value="${raw##*=}"
-      if [[ "$name" == "$component" ]]; then
+      if [[ "$name" == "$_app_name" ]]; then
         path="$value"
         break
       fi
     done
   fi
-
-  printf "%s/%s" "$root_path" "$path"
+  if test -n "$path"; then
+    printf "%s/%s" "$_root_path" "$path"
+  else
+    printf "%s" "$_root_path"
+  fi
 }
 
 get_releaser() {
-  local releaser="$action_path/get-release.sh"
-  local input="$1" tag="$override_tag"
-  if test -z "$tag" &&
-    [[ "$env" != "production" ]]; then
+  local releaser="$_action_path/get-release.sh"
+  local input="$1" tag="$_image_tag"
+  if test -z "$tag" && [[ "$_environment" != "production" ]]; then
     tag="sha-$(git rev-parse --short HEAD)"
   fi
-
-  $releaser "$input" "$component" "$tag"
+  "$releaser" "$input" "$_app_name" "$tag"
 }
 
 get_docker_image() {
-  if test -n "$image_prefix"; then
-    printf "%s%s" "$image_prefix" "$component"
-  else
-    printf "%s" "$component"
-  fi
+  printf "%s%s" "$_image_prefix" "$_app_name"
 }
 
 get_docker_context() {
-  local name value raw
+  local name value raw repo
   local path=""
-  if test -n "$contexts_path"; then
+  if test -n "$_context_paths"; then
     # shellcheck disable=SC2206
-    repo=($contexts_path)
+    repo=($_context_paths)
     for raw in "${repo[@]}"; do
       name="${raw%%=*}"
       value="${raw##*=}"
-      if [[ "$name" == "$component" ]]; then
+      if [[ "$name" == "$_app_name" ]]; then
         path="$value"
         break
       fi
@@ -83,22 +83,22 @@ get_docker_context() {
   fi
 
   if test -n "$path"; then
-    printf "%s/%s" "$root_path" "$path"
+    printf "%s/%s" "$_root_path" "$path"
   else
-    printf "%s" "$root_path"
+    printf "%s" "$_root_path"
   fi
 }
 
 get_docker_file() {
   local name value raw
   local path="Dockerfile"
-  if test -n "$dockerfiles_path"; then
+  if test -n "$_df_paths"; then
     # shellcheck disable=SC2206
-    repo=($dockerfiles_path)
+    repo=($_df_paths)
     for raw in "${repo[@]}"; do
       name="${raw%%=*}"
       value="${raw##*=}"
-      if [[ "$name" == "$component" ]]; then
+      if [[ "$name" == "$_app_name" ]]; then
         path="$value"
         break
       fi
@@ -116,3 +116,9 @@ _set_output() {
 }
 
 main
+
+unset _environment
+unset _app_name
+unset _image_prefix _image_tag
+unset _df_paths _app_paths _context_paths
+unset _action_path _root_path
