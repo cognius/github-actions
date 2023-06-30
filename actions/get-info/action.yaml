@@ -3,11 +3,17 @@ description: get release information
 author: Kamontat Chantrachirathumrong
 
 outputs:
+  environment:
+    description: Environment name
+    value: ${{ steps.default.outputs.environment }}
+  app-name:
+    description: Application name
+    value: ${{ steps.default.outputs.app-name }}
   app-path:
-    description: Component path
+    description: Application path
     value: ${{ steps.default.outputs.app-path }}
   version:
-    description: Component version
+    description: Application version
     value: ${{ steps.default.outputs.version }}
   git-tag:
     description: Git tag name
