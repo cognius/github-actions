@@ -10,8 +10,8 @@
 __VERSION_APP_SEP="/"
 __VERSION_PREFIX="v"
 __VERSION_SEP="."
-__VERSION_MAX_INDEX=99
-__VERSION_TIMESTAMP="%y.%m.%d"
+__VERSION_MAX_INDEX=999
+__VERSION_TIMESTAMP="%Y.%-W"
 
 get_mode() {
   local app="$1" override="$2"
@@ -111,7 +111,7 @@ _generate_version() {
       exit 2
     fi
 
-    tag="$(_build_version "$app" "$timestamp" "+$index")"
+    tag="$(_build_version "$app" "$timestamp" "$index")"
     _debug "check version" "$tag"
 
     if ! _has_version "$tag"; then
