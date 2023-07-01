@@ -107,7 +107,7 @@ _generate_version() {
 
   while true; do
     if [ "$index" -gt "$__VERSION_MAX_INDEX" ]; then
-      printf "ERROR: %s" "too many released version on same day" >&2
+      printf "ERROR: %s" "your version has reached the limit, try again later" >&2
       exit 2
     fi
 
