@@ -104,7 +104,7 @@ send() {
   fi
 }
 
-main || exit 1
+main || echo "[ERROR] Something went wrong"
 
 unset _mode _step _status
 unset _app_name _app_version _environment
