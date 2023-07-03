@@ -39,7 +39,7 @@ start)
   message+=" ($gh_action_link)"
   ;;
 error | failure)
-  message+="<!here> Finished **$step** with \`error\`"
+  message+="<!here> Finished *$step* with \`error\`"
   message+=", please check $gh_action_link"
   ;;
 success)
