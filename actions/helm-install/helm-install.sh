@@ -22,7 +22,9 @@ _APP_VERSION="${APP_VERSION:-}"
 _ENVIRONMENT="${ENVIRONMENT:?}"
 _EKS_CLUSTER_NAME="${EKS_CLUSTER_NAME:?}"
 _HELM_TIMEOUT="${HELM_TIMEOUT:-5m}"
-_AUTO_ENV="${AUTO_ENV:-}"
+## example: HELM_ARGUMENTS="--set hello=world"
+_HELM_ARGUMENTS="${HELM_ARGUMENTS:-}"
+_IMAGE_TAG_KEY="${IMAGE_TAG_KEY:-image.tag}"
 
 validate() {
   ## jq: json query cli (default in github action)
@@ -112,7 +114,10 @@ main() {
   [[ "$chart_version" != "latest" ]] &&
     helm_args+=(--version "$chart_version")
   test -n "$_APP_VERSION" &&
-    helm_args+=(--set "image.tag=$_APP_VERSION")
+    helm_args+=(--set "${_IMAGE_TAG_KEY}=${_APP_VERSION}")
+  ## Force separate by space when enter extra arguments
+  test -n "$_HELM_ARGUMENTS" &&
+    helm_args+=($_HELM_ARGUMENTS)
   __exec "$HELM_CMD" "${helm_args[@]}" ||
     return $?
 }
@@ -133,8 +138,10 @@ clean() {
     _ENVIRONMENT \
     _EKS_CLUSTER_NAME \
     _HELM_TIMEOUT \
+    _HELM_ARGUMENTS \
     _AWS_REGION \
-    _AWS_ECR_REGISTRY
+    _AWS_ECR_REGISTRY \
+    _IMAGE_TAG_KEY
 }
 
 __error() {
