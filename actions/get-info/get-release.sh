@@ -9,6 +9,7 @@
 
 __VERSION_APP_SEP="/"
 __VERSION_PREFIX="v"
+__VERSION_PREFIX_WHITELIST=("v" "sha-")
 __VERSION_SEP="."
 __VERSION_MAX_INDEX=999
 __VERSION_TIMESTAMP="%Y.%-W"
@@ -151,11 +152,7 @@ _build_version() {
         output="$output$__VERSION_SEP$input"
       fi
     else
-      if [[ "$input" =~ ^$__VERSION_PREFIX ]]; then
-        output="$input"
-      else
-        output="$__VERSION_PREFIX$input"
-      fi
+      output="$(_add_version_prefix "$input")"
     fi
   done
 
@@ -174,15 +171,26 @@ _build_override_version() {
     return 0
   fi
 
-  if ! [[ "$override" =~ ^$__VERSION_PREFIX ]]; then
-    override="$__VERSION_PREFIX$override"
-  fi
-
+  override="$(_add_version_prefix "$override")"
   if test -n "$app"; then
     printf "%s%s%s" "$app" "$__VERSION_APP_SEP" "$override"
   else
     printf "%s" "$override"
   fi
+}
+
+_add_version_prefix() {
+  local whitelist version="$1"
+  local prefix="$__VERSION_PREFIX"
+
+  for whitelist in "${__VERSION_PREFIX_WHITELIST[@]}"; do
+    if [[ "$override" =~ ^$whitelist ]]; then
+      prefix=""
+      break
+    fi
+  done
+
+  printf '%s%s' "$prefix" "$version"
 }
 
 ## Check input tag version exist or not
@@ -200,6 +208,7 @@ main "$@"
 
 unset __VERSION_APP_SEP \
   __VERSION_PREFIX \
+  __VERSION_PREFIX_WHITELIST \
   __VERSION_SEP \
   __VERSION_MAX_INDEX \
   __VERSION_TIMESTAMP
