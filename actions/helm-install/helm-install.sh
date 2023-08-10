@@ -63,10 +63,10 @@ main() {
     ".chartVersion" "$conf_path" "latest")"
   release_name="$(__config_get "releaseName" \
     ".name" "$conf_path")"
+  release_name="$(__config_get "releaseName" \
+    ".environments.$_ENVIRONMENT.name" "$conf_path" "$release_name")"
   namespace="$(__config_get "namespace" \
     ".environments.$_ENVIRONMENT.namespace" "$conf_path")"
-  values_name="$(__config_get "valuesName" \
-    ".environments.$_ENVIRONMENT.values" "$conf_path")"
   values_name="$(__config_get "valuesName" \
     ".environments.$_ENVIRONMENT.values" "$conf_path")"
   chart="$(__chart_build "$schema" "$chart_name")"
@@ -116,6 +116,7 @@ main() {
   test -n "$_APP_VERSION" &&
     helm_args+=(--set "${_IMAGE_TAG_KEY}=${_APP_VERSION}")
   ## Force separate by space when enter extra arguments
+  # shellcheck disable=SC2206
   test -n "$_HELM_ARGUMENTS" &&
     helm_args+=($_HELM_ARGUMENTS)
   __exec "$HELM_CMD" "${helm_args[@]}" ||

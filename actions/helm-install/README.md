@@ -15,6 +15,7 @@ You can specific [variables](#configuration-variables) on this file (using bash 
   "name": "<name>",
   "environments": {
     "<environment_name>": {
+      "name": "[name]",
       "namespace": "<kube_namespace>",
       "values": "<values-file.yaml>"
     }
@@ -44,6 +45,10 @@ Release name when run `helm install`.
 ### Environments
 
 The object for environment specific settings.
+
+#### Environment release name
+
+The optional release name for each environment.
 
 #### Environment namespace
 
