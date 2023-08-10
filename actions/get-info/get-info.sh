@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _environment="${ENVIRONMENT:?}"
-_app_name="${APP_NAME:-${COMPONENT:?}}"
+_app_name="${APP_NAME:-${COMPONENT:-}}"
 
 _image_prefix="${IMAGE_PREFIX:-}"
 _image_tag="${IMAGE_TAG:-$OVERRIDE_TAG}"
