@@ -4,7 +4,7 @@ This action will read the configuration and install helm-charts based on that co
 
 ## Configuration
 
-File name `config.json` placed at `deploys` directory (**./deploys/config.json**).
+File name `config.json` placed at `deploys` directory (**./deploys/<app_name>/config.json**).
 You can specific [variables](#configuration-variables) on this file (using bash variables syntax).
 
 ```json
