@@ -1,0 +1,10 @@
+name: Example
+description: Example action
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - name: create hosts
+      run: $GITHUB_ACTION_PATH/example.sh
+      shell: bash

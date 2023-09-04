@@ -1,0 +1,9 @@
+on:
+  workflow_call:
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: hello
+        uses: cognius/github-actions/actions/example@v2
