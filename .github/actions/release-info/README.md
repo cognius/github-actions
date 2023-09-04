@@ -2,6 +2,17 @@
 
 Get release information
 
+## Prerequisite
+
+This action requires **action/checkout** fetch-depth to be `0`
+for fetching old version from git history.
+
+```yaml
+- uses: actions/checkout@v3
+  with:
+    fetch-depth: 0
+```
+
 ## Usage
 
 ```yaml
