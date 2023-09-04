@@ -1,5 +1,5 @@
-name: Add hosts aliases
-description: add hosts aliases using /etc/hosts
+name: Add host aliases
+description: add host aliases using /etc/hosts
 author: Kamontat Chantrachirathumrong
 
 runs:
