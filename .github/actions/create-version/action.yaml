@@ -1,22 +1,21 @@
 name: Create version
-description: tag and create new version in github
+description: Create Github release and add tags
 author: Kamontat Chantrachirathumrong
 
 runs:
   using: "composite"
   steps:
-    - name: Setup golang
+    - name: Set up golang
       uses: actions/setup-go@v4
       with:
-        go-version: "1.20"
+        ## https://github.com/git-chglog/git-chglog/blob/master/go.mod
+        go-version: "1.19"
+        cache: false
+    ## https://github.com/git-chglog/git-chglog#installation
     - name: Install git-chglog
       shell: bash
       run: |
         go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
-    - name: git-chglog version
+    - name: Create version
       shell: bash
-      run: |
-        git-chglog --version
-    - name: create new version
       run: $GITHUB_ACTION_PATH/create-version.sh
-      shell: bash

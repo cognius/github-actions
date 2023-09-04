@@ -34,6 +34,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: create hosts
+    - name: fetch information
       run: $GITHUB_ACTION_PATH/release-info.sh
       shell: bash
