@@ -55,13 +55,15 @@ jobs:
 List of shared actions on this repository
 
 1. `add-hosts` - add hostname aliases using **/etc/hosts** file ([here][add-hosts-action-path])
-2. `example` - example action ([here][example-action-path])
+2. `release-info` - get release information ([here][release-info-path])
+3. `example` - example action ([here][example-action-path])
 
-[add-hosts-action-path]: ./actions/add-hosts/README.md
-[example-action-path]: ./actions/example/README.md
+[add-hosts-action-path]: ./.github/actions/add-hosts/README.md
+[release-info-path]: ./.github/actions/release-info/README.md
+[example-action-path]: ./.github/actions/example/README.md
 
 ## Workflows
 
 1. `example` - example workflow ([here][example-workflow-path])
 
-[example-workflow-path]: ./workflows/example/README.md
+[example-workflow-path]: ./.github/workflows/README.md

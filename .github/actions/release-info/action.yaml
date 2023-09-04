@@ -1,0 +1,39 @@
+name: Release information
+description: Get release information
+author: Kamontat Chantrachirathumrong
+
+outputs:
+  mode:
+    description: Release mode
+    value: ${{ steps.default.outputs.mode }}
+  environment:
+    description: Application environment
+    value: ${{ steps.default.outputs.environment }}
+  app-name:
+    description: Application name
+    value: ${{ steps.default.outputs.app-name }}
+  app-path:
+    description: Application path
+    value: ${{ steps.default.outputs.app-path }}
+  app-version:
+    description: Application version
+    value: ${{ steps.default.outputs.app-version }}
+  git-tag:
+    description: Git tag name
+    value: ${{ steps.default.outputs.git-tag }}
+  docker-image:
+    description: Docker image name
+    value: ${{ steps.default.outputs.docker-image }}
+  docker-context:
+    description: Docker context path
+    value: ${{ steps.default.outputs.docker-context }}
+  docker-file:
+    description: Dockerfile path
+    value: ${{ steps.default.outputs.docker-file }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: create hosts
+      run: $GITHUB_ACTION_PATH/release-info.sh
+      shell: bash

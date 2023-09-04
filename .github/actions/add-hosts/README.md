@@ -18,6 +18,7 @@ Create host aliases using **/etc/hosts** file
 ### Hosts
 
 `HOSTS` is comma/newline separated hostname to create as alias to localhost.
+Example below:
 
 ```bash
 HOSTS='
@@ -33,3 +34,13 @@ host3.com,host4.com
 ### Host file
 
 `HOSTS_FILE` is a file to write aliases to (default is **/etc/hosts**)
+
+## Development
+
+To testing locally without Github Action.
+
+```bash
+HOSTS=hostname.com,newhostname.io \
+  HOSTS_FILE=/dev/null \
+  ./.github/actions/add-hosts/add-hosts.sh
+```
