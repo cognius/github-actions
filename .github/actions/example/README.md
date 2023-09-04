@@ -6,5 +6,5 @@ Example action
 
 ```yaml
 - name: Example action
-  uses: cognius/github-actions/actions/example@v2
+  uses: cognius/github-actions/.github/actions/example@v2
 ```

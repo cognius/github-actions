@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: hello
-        uses: cognius/github-actions/actions/example@v2
+        uses: cognius/github-actions/.github/actions/example@v2
