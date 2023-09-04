@@ -1,0 +1,10 @@
+name: Add hosts aliases
+description: add hosts aliases using /etc/hosts
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - name: create hosts
+      run: $GITHUB_ACTION_PATH/add-hosts.sh
+      shell: bash
