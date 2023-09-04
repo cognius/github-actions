@@ -42,12 +42,12 @@ To reuse workflows:
 ```yaml
 jobs:
   job:
-    ## <workflow-name> is a directory name inside /actions directory
-    ## <branch-name> should default to 'v2' except if you would like to test your working actions
+    ## <workflow-name> is a yaml file name inside /workflows directory
+    ## <branch-name> should default to 'v2' except if you would like to test your working workflow
     ## ref: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iduses
-    uses: cognius/github-actions/.github/workflows/<workflow-name>/main.yaml@<branch-name>
+    uses: cognius/github-actions/.github/workflows/<workflow-name>.yaml@<branch-name>
     ## example
-    # uses: cognius/github-actions/.github/workflows/example/main.yaml@v2
+    # uses: cognius/github-actions/.github/workflows/example.yaml@v2
 ```
 
 ## Actions
