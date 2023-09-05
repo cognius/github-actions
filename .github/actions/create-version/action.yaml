@@ -5,17 +5,6 @@ author: Kamontat Chantrachirathumrong
 runs:
   using: "composite"
   steps:
-    - name: Set up golang
-      uses: actions/setup-go@v4
-      with:
-        ## https://github.com/git-chglog/git-chglog/blob/master/go.mod
-        go-version: "1.19"
-        cache: false
-    ## https://github.com/git-chglog/git-chglog#installation
-    - name: Install git-chglog
-      shell: bash
-      run: |
-        go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
     - name: Create version
       shell: bash
       run: $GITHUB_ACTION_PATH/create-version.sh

@@ -30,7 +30,6 @@ jobs:
           #   ./local/path
           # VERSION_APP_SEP: /
           # VERSION_PREFIX: v
-          # ROOT_WD: /
           # GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 ```
 
@@ -67,10 +66,6 @@ separate application name and version (default is **/**).
 ### Version prefix
 
 `VERSION_PREFIX` is a prefix before version string (default is **v**).
-
-### Root directory
-
-`ROOT_WD` is a root directory for all relative path to resolve to (default is `$PWD`)
 
 ### Github token
 
