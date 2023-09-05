@@ -6,12 +6,6 @@
 set -e #ERROR    - Force exit if error occurred.
 
 _app_version="${APP_VERSION:?}"
-_app_name="${APP_NAME:-}"
-_app_paths="${APP_PATHS:-}"
-
-## NOTES: Variable from release-info/release.sh
-_ver_app_sep="${VERSION_APP_SEP:-/}"
-_ver_prefix="${VERSION_PREFIX:-v}"
 
 _token="${GH_TOKEN:-${GITHUB_TOKEN:-${GITHUB_DEFAULT_TOKEN:?}}}"
 _repo="${GITHUB_REPOSITORY:?}"
@@ -21,12 +15,36 @@ main() {
     printf "[ERR] cannot create comments because Github Cli is missing\n" >&2
     exit 1
   fi
+  if [[ "$_app_version" =~ ^sha- ]]; then
+    printf "[INF] skipped create development version (%s)" "$_app_version" >&2
+    return 0
+  fi
 
+  local formatted_date
+  formatted_date="$(date +"%Y-%m-%d")"
   local args=("release" "create" "$_app_version")
   args+=("--repo" "$_repo")
   args+=("--generate-notes")
+  args+=("--title" "$_app_version ($formatted_date)")
+
+  local last_version
+  last_version="$(_last_version)"
+  if test -n "$last_version"; then
+    args+=("--notes-start-tag" "$last_version")
+  fi
 
   GITHUB_TOKEN="$_token" _exec gh "${args[@]}"
+}
+
+_last_version() {
+  local prefix
+  prefix="$(echo "$_app_version" | grep -oE '^[^0-9]*' | head -n1)"
+  local head
+  head="$(git rev-list --tags --max-count=1)"
+  if ! git describe \
+    --abbrev=0 --match "$prefix*" --tags "$head" 2>/dev/null; then
+    printf ''
+  fi
 }
 
 _exec() {
@@ -38,6 +56,5 @@ _exec() {
 
 main
 
-unset _app_version _app_name _app_paths
-unset _ver_app_sep _ver_prefix
+unset _app_version
 unset _token _repo

@@ -7,26 +7,28 @@ Get release information
 This action requires **action/checkout** fetch-depth to be `0`
 for fetching old version from git history.
 
-```yaml
-- uses: actions/checkout@v3
-  with:
-    fetch-depth: 0
-```
-
 ## Usage
 
 ```yaml
-- name: Get information
-  uses: cognius/github-actions/.github/actions/release-info@v2
-  env:
-    # APP_ENV: production
-    # APP_NAME: test
-    # APP_VERSION: v1.0.0
-    # IMAGE_PREFIX: example
-    # APP_PATHS: test=packages/test
-    # DOCKER_CONTEXT_PATHS: test=
-    # DOCKER_FILE_PATHS: test=packages/test/Dockerfile
-    # ROOT_WD=/
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get information
+        id: info
+        uses: cognius/github-actions/.github/actions/release-info@v2
+        env:
+          # APP_ENV: production
+          # APP_NAME: test
+          # APP_VERSION: v1.0.0
+          # IMAGE_PREFIX: example
+          # APP_PATHS: test=packages/test
+          # DOCKER_CONTEXT_PATHS: test=
+          # DOCKER_FILE_PATHS: test=packages/test/Dockerfile
+          # ROOT_WD=/
 ```
 
 ## Environment
