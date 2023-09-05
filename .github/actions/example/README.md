@@ -5,8 +5,12 @@ Example action
 ## Usage
 
 ```yaml
-- name: Example action
-  uses: cognius/github-actions/.github/actions/example@v2
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Example action
+        uses: cognius/github-actions/.github/actions/example@v2
 ```
 
 ## Development

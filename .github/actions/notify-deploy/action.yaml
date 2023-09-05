@@ -1,0 +1,10 @@
+name: Deployment notification
+description: Notify when someone deploying something on Slack
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - name: Send message to slack
+      run: $GITHUB_ACTION_PATH/notify-deploy.sh
+      shell: bash
