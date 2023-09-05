@@ -4,6 +4,9 @@ Shared workflows
 
 ## Usage
 
+> Note: For workflows with `internal_` as prefix is for internal uses only,
+> it not sharable.
+
 ```yaml
 jobs:
   job:

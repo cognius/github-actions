@@ -1,0 +1,38 @@
+name: Main
+
+on:
+  push:
+
+jobs:
+  example-workflow:
+    uses: cognius/github-actions/.github/workflows/example.yaml@v2
+  add-hosts-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/add-hosts@v2
+        env:
+          HOSTS: example.com
+      - run: docker run --name nginx --rm --publish 9999:80 --detach nginx:stable
+      - run: curl -I "example.com:9999"
+      - run: docker stop nginx
+  release-info-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - id: info
+        uses: cognius/github-actions/.github/actions/release-info@v2
+      - id: info-2
+        uses: cognius/github-actions/.github/actions/release-info@v2
+        env:
+          APP_ENV: production
+          APP_NAME: test
+          APP_PATHS: test=
+          DOCKER_CONTEXT_PATHS: test=
+          DOCKER_FILE_PATHS: test=
+      - run: test -n "${{ steps.info.outputs.mode }}"
+      - run: test -z "${{ steps.info.outputs.environment }}"
+      - run: test -n "${{ steps.info.outputs.app-version }}"
+      - run: test -n "${{ steps.info-2.outputs.app-name }}"
+      - run: test -n "${{ steps.info-2.outputs.environment }}"
