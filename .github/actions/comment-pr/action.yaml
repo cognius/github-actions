@@ -1,4 +1,4 @@
-name: Comments
+name: Comment pull-request
 description: Create or Update pull request comments
 author: Kamontat Chantrachirathumrong
 
@@ -6,7 +6,7 @@ runs:
   using: "composite"
   steps:
     - name: create/update comments
-      run: $GITHUB_ACTION_PATH/comments.sh
+      run: $GITHUB_ACTION_PATH/comment-pr.sh
       shell: bash
       env:
         GITHUB_DEFAULT_TOKEN: ${{ github.token }}
