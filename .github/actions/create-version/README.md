@@ -15,6 +15,8 @@ for fetching old version from git history.
 jobs:
   job:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       ## Requires to fetching git history
       - uses: actions/checkout@v3
