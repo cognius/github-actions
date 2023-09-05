@@ -8,6 +8,7 @@ set -e #ERROR    - Force exit if error occurred.
 _app_version="${APP_VERSION:?}"
 _app_name="${APP_NAME:-}"
 _app_paths="${APP_PATHS:-}"
+_token="${GH_TOKEN:-${GITHUB_TOKEN:-${GITHUB_DEFAULT_TOKEN:?}}}"
 
 ## NOTES: Variable from release-info/release.sh
 _ver_app_sep="${VERSION_APP_SEP:-/}"
@@ -61,7 +62,7 @@ main() {
     fi
 
     hub_args+=("$_app_version")
-    _exec hub "${hub_args[@]}"
+    GITHUB_TOKEN="$_token" _exec hub "${hub_args[@]}"
   else
     _warn "skipped create release because hub command not found"
   fi
@@ -84,6 +85,6 @@ _warn() {
 
 main
 
-unset _app_version _app_name _app_paths
+unset _app_version _app_name _app_paths _token
 unset _ver_app_sep _ver_prefix
 unset _root_path

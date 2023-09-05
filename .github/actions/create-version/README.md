@@ -18,18 +18,23 @@ for fetching old version from git history.
 ## Usage
 
 ```yaml
-- name: Create version
-  uses: cognius/github-actions/.github/actions/create-version@v2
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    APP_VERSION: v1.0.0
-    # APP_NAME: test
-    # APP_PATHS: |
-    #   hello/world
-    #   ./local/path
-    # VERSION_APP_SEP: /
-    # VERSION_PREFIX: v
-    # ROOT_WD: /
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create version
+        uses: cognius/github-actions/.github/actions/create-version@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_VERSION: v1.0.0
+          # APP_NAME: test
+          # APP_PATHS: |
+          #   hello/world
+          #   ./local/path
+          # VERSION_APP_SEP: /
+          # VERSION_PREFIX: v
+          # ROOT_WD: /
+          # GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 ```
 
 ## Environment
@@ -69,6 +74,10 @@ separate application name and version (default is **/**).
 ### Root directory
 
 `ROOT_WD` is a root directory for all relative path to resolve to (default is `$PWD`)
+
+### Github token
+
+Custom token to authenticated with GitHub (default is **secrets.GITHUB_TOKEN**)
 
 ## Development
 

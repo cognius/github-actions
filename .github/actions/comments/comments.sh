@@ -7,6 +7,7 @@ set -e #ERROR    - Force exit if error occurred.
 
 _message="${COMMENT_MESSAGE:?}"
 _update="${COMMENT_UPDATE:-false}"
+_token="${GH_TOKEN:-${GITHUB_TOKEN:-${GITHUB_DEFAULT_TOKEN:?}}}"
 
 ## Set by Github Context
 _event="${GITHUB_EVENT_NAME:?}"
@@ -37,7 +38,7 @@ main() {
     args+=("--edit-last")
   fi
 
-  _exec gh "${args[@]}"
+  GITHUB_TOKEN="$_token" _exec gh "${args[@]}"
 }
 
 _exec() {
@@ -52,5 +53,5 @@ _exec() {
 
 main
 
-unset _message _update
+unset _message _update _token
 unset _event _repo _pr

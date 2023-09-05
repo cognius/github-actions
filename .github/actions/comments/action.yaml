@@ -9,5 +9,5 @@ runs:
       run: $GITHUB_ACTION_PATH/comments.sh
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_DEFAULT_TOKEN: ${{ github.token }}
         GITHUB_PR_NUMBER: ${{ github.event.number }}

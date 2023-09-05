@@ -20,9 +20,9 @@ jobs:
     steps:
       - uses: cognius/github-actions/.github/actions/comments@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMENT_MESSAGE: hello world
           # COMMENT_UPDATE: true
+          # GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 ```
 
 ## Environment
@@ -36,12 +36,18 @@ jobs:
 `COMMENT_UPDATE` set to **true** to update last comment instead of
 create new one (default is **false**).
 
+### Github token
+
+Custom token to authenticated with GitHub (default is **secrets.GITHUB_TOKEN**)
+
 ## Development
 
 To testing locally without Github Action.
 
 ```bash
 DRYRUN=true COMMENT_MESSAGE="hello world" \
-  GITHUB_EVENT_NAME=pull_request GITHUB_PR_NUMBER=1 \
+  GITHUB_REPOSITORY=test/local \
+  GITHUB_EVENT_NAME=pull_request \
+  GITHUB_PR_NUMBER=1 \
   ./.github/actions/comments/comments.sh
 ```
