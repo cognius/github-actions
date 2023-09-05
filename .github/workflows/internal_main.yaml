@@ -15,6 +15,52 @@ jobs:
       - run: docker run --name nginx --rm --publish 9999:80 --detach nginx:stable
       - run: curl -I "example.com:9999"
       - run: docker stop nginx
+  comment-pr-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/comment-pr@v2
+        env:
+          DRYRUN: true
+          COMMENT_MESSAGE: |
+            hello world
+            multiple line
+  create-version-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: cognius/github-actions/.github/actions/create-version@v2
+        env:
+          DRYRUN: true
+          APP_VERSION: v1.0.0
+  notify-deploy-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/notify-deploy@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: start
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
+      - uses: cognius/github-actions/.github/actions/notify-deploy@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: success
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
+      - uses: cognius/github-actions/.github/actions/notify-deploy@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: failure
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
+      - uses: cognius/github-actions/.github/actions/notify-deploy@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: cancelled
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
   release-info-action:
     runs-on: ubuntu-latest
     steps:
@@ -36,13 +82,3 @@ jobs:
       - run: test -n "${{ steps.info.outputs.app-version }}"
       - run: test -n "${{ steps.info-2.outputs.app-name }}"
       - run: test -n "${{ steps.info-2.outputs.environment }}"
-  create-version-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: cognius/github-actions/.github/actions/create-version@v2
-        env:
-          DRYRUN: enabled
-          APP_VERSION: v1.0.0

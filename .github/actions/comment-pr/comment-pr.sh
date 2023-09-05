@@ -12,8 +12,6 @@ _token="${GH_TOKEN:-${GITHUB_TOKEN:-${GITHUB_DEFAULT_TOKEN:?}}}"
 ## Set by Github Context
 _event="${GITHUB_EVENT_NAME:?}"
 _repo="${GITHUB_REPOSITORY:?}"
-## Set internally by action.yaml
-_pr="${GITHUB_PR_NUMBER:?}"
 
 main() {
   local event="pull_request"
@@ -26,12 +24,12 @@ main() {
     return 0
   fi
 
-  local tmp
+  local tmp pr_num="${GITHUB_PR_NUMBER:?}"
   tmp="$(mktemp)"
 
   printf "%s" "$_message" >"$tmp"
 
-  local args=("pr" "comment" "$_pr")
+  local args=("pr" "comment" "$pr_num")
   args+=("--repo" "$_repo")
   args+=("--body-file" "$tmp")
   if test -n "$_update" && [[ "$_update" != "false" ]]; then
@@ -54,4 +52,4 @@ _exec() {
 main
 
 unset _message _update _token
-unset _event _repo _pr
+unset _event _repo
