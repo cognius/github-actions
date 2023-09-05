@@ -1,0 +1,13 @@
+name: Comments
+description: Create or Update pull request comments
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - name: create/update comments
+      if: ${{ github.event_name == 'pull_request' }}
+      run: $GITHUB_ACTION_PATH/comments.sh
+      shell: bash
+      env:
+        GITHUB_PR_NUMBER: ${{ github.event.number }}
