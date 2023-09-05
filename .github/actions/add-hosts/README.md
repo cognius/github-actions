@@ -5,12 +5,16 @@ Create host aliases using **/etc/hosts** file
 ## Usage
 
 ```yaml
-- name: Create host aliases
-  uses: cognius/github-actions/.github/actions/add-hosts@v2
-  env:
-    HOSTS: hostname.com,newhostname.com
-    # HOSTS_LOCALHOST: 127.0.0.1
-    # HOSTS_FILE: /etc/hosts
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create host aliases
+        uses: cognius/github-actions/.github/actions/add-hosts@v2
+        env:
+          HOSTS: hostname.com,newhostname.com
+          # HOSTS_LOCALHOST: 127.0.0.1
+          # HOSTS_FILE: /etc/hosts
 ```
 
 ## Environments

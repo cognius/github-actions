@@ -11,12 +11,18 @@ This will only works when [on][github-action-on-url] event is `pull-request`
 ## Usage
 
 ```yaml
-- name: comment report
-  uses: cognius/github-actions/.github/actions/comments@v2
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    COMMENT_MESSAGE: hello world
-    # COMMENT_UPDATE: true
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: cognius/github-actions/.github/actions/comments@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_MESSAGE: hello world
+          # COMMENT_UPDATE: true
 ```
 
 ## Environment

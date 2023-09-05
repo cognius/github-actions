@@ -8,8 +8,10 @@ set -e #ERROR    - Force exit if error occurred.
 _message="${COMMENT_MESSAGE:?}"
 _update="${COMMENT_UPDATE:-false}"
 
-## Set internally by action.yaml
+## Set by Github Context
 _event="${GITHUB_EVENT_NAME:?}"
+_repo="${GITHUB_REPOSITORY:?}"
+## Set internally by action.yaml
 _pr="${GITHUB_PR_NUMBER:?}"
 
 main() {
@@ -29,6 +31,7 @@ main() {
   printf "%s" "$_message" >"$tmp"
 
   local args=("pr" "comment" "$_pr")
+  args+=("--repo" "$_repo")
   args+=("--body-file" "$tmp")
   if test -n "$_update" && [[ "$_update" != "false" ]]; then
     args+=("--edit-last")
@@ -50,4 +53,4 @@ _exec() {
 main
 
 unset _message _update
-unset _event _pr
+unset _event _repo _pr
