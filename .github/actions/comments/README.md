@@ -14,6 +14,7 @@ This will only works when [on][github-action-on-url] event is `pull-request`
 - name: comment report
   uses: cognius/github-actions/.github/actions/comments@v2
   env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     COMMENT_MESSAGE: hello world
     # COMMENT_UPDATE: true
 ```
