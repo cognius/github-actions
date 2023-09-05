@@ -26,12 +26,27 @@ _git_commit="${GITHUB_SHA:?}"
 _gh_id="${GITHUB_RUN_ID:?}"
 
 main() {
+  local ref_url="https://github.com/$_git_repo/tree/$_git_ref"
+  [[ "$_git_ref_type" == "tag" ]] &&
+    ref_url="https://github.com/$_git_repo/releases/tag/$_git_ref"
+  local ref_md="<$ref_url|$_git_ref>"
+
   local commit_url="https://github.com/$_git_repo/commit/$_git_commit"
-  local commit_md="<$commit_url|$_git_ref>"
+  local commit_md="<$commit_url|${_git_commit:0:7}>"
+
   local action_url="https://github.com/$_git_repo/actions/runs/$_gh_id"
   local action_md="<$action_url|$_gh_id>"
 
-  local args=($'\n' "$commit_md" "$action_md")
+  local version="$_app_version"
+  test -z "$version" && [[ "$_git_ref_type" == "tag" ]] &&
+    version="$_git_ref"
+
+  local args=(
+    $'\n'
+    "$version"
+    "$commit_md" "$ref_md" "$action_md"
+  )
+
   case "$_type" in
   starting | start | t) _send _start_message "${args[@]}" ;;
   failure | error | fail | f) _send _error_message "${args[@]}" ;;
@@ -46,7 +61,8 @@ main() {
 }
 
 _start_message() {
-  local newline="$1" commit="$2" action="$3"
+  local newline="$1" version="$2"
+  local commit_md="$3" ref_md="$4" action_md="$5"
   local message=()
 
   if [[ "$_app_env" == "production" ]]; then
@@ -56,70 +72,76 @@ _start_message() {
   fi
 
   message+=("*$_git_author*" "starting" "$_action")
-  test -n "$_app_version" &&
-    message+=("\`${_app_name}[${_app_version}]\`")
-  test -z "$_app_version" &&
+  test -n "$version" &&
+    message+=("\`${_app_name}[${version}]\`")
+  test -z "$version" &&
     message+=("\`${_app_name}\`")
-  message+=("from $commit")
+  message+=("from $commit_md")
   test -n "$_app_env" &&
     message+=("to *$_app_env*")
-  message+=("(${action})")
+  message+=("(${action_md})")
 
   printf "%s" "${message[*]}"
 }
 
 _error_message() {
-  local newline="$1" commit="$2" action="$3"
+  local newline="$1" version="$2"
+  local commit_md="$3" ref_md="$4" action_md="$5"
   local message=()
 
   message+=("<!here>")
   message+=("Finished *$_action*")
   test -n "$_step" && message+=("with \`error\` at *$_step* step,")
   test -z "$_step" && message+=("with \`error\`,")
-  message+=("please check $action")
+  message+=("please check $action_md")
 
   printf "%s" "${message[*]}"
 }
 
 _success_message() {
-  local newline="$1" commit="$2" action="$3"
+  local newline="$1" version="$2"
+  local commit_md="$3" ref_md="$4" action_md="$5"
   local message=()
 
-  message+=("Finished *$_action* successfully $action" "$newline")
+  message+=("Finished *$_action* successfully ($action_md)" "$newline")
   message+=("- *Application name*: $_app_name" "$newline")
   test -n "$_app_env" &&
     message+=("- *Environment*: $_app_env" "$newline")
-  test -n "$_app_version" &&
-    message+=("- *Application version*: \`$_app_version\`" "$newline")
+  test -n "$version" &&
+    message+=("- *Application version*: \`$version\`" "$newline")
   message+=("- *Author*: $_git_author" "$newline")
-  message+=("- *Reference*: $commit" "$newline")
+  message+=("- *Commit*: $commit_md" "$newline")
+  message+=("- *Reference*: $ref_md" "$newline")
 
   printf "%s" "${message[*]}"
 }
 
 _cancel_message() {
-  local newline="$1" commit="$2" action="$3"
+  local newline="$1" version="$2"
+  local commit_md="$3" ref_md="$4" action_md="$5"
   local message=()
 
   message+=("<!here>")
   message+=("*$_git_author*" "$_type" "$_action")
-  message+=("(${action})")
+  message+=("(${action_md})")
 
   printf "%s" "${message[*]}"
 }
 
 _complete_message() {
-  local newline="$1" commit="$2" action="$3"
+  local newline="$1" version="$2"
+  local commit_md="$3" ref_md="$4" action_md="$5"
   local message=()
 
-  message+=("Completed *$_action* $action" "$newline")
+  message+=("Completed *$_action* ($action_md)" "$newline")
   message+=("- *Application name*: $_app_name" "$newline")
   test -n "$_app_env" &&
     message+=("- *Environment*: $_app_env" "$newline")
-  test -n "$_app_version" &&
-    message+=("- *Application version*: \`$_app_version\`" "$newline")
+  test -n "$version" &&
+    message+=("- *Application version*: \`$version\`" "$newline")
   message+=("- *Author*: $_git_author" "$newline")
-  message+=("- *Reference*: $commit" "$newline")
+  message+=("- *Commit*: $commit_md" "$newline")
+  message+=("- *Reference*: $ref_md" "$newline")
 
   printf "%s" "${message[*]}"
 }
