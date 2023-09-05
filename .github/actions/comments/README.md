@@ -35,6 +35,6 @@ To testing locally without Github Action.
 
 ```bash
 DRYRUN=true COMMENT_MESSAGE="hello world" \
-  GITHUB_PR_NUMBER=1 \
+  GITHUB_EVENT_NAME=pull_request GITHUB_PR_NUMBER=1 \
   ./.github/actions/comments/comments.sh
 ```

@@ -9,12 +9,18 @@ _message="${COMMENT_MESSAGE:?}"
 _update="${COMMENT_UPDATE:-false}"
 
 ## Set internally by action.yaml
+_event="${GITHUB_EVENT_NAME:?}"
 _pr="${GITHUB_PR_NUMBER:?}"
 
 main() {
+  local event="pull_request"
   if ! command -v gh >/dev/null; then
-    printf "[ERR] cannot create comments because Github Cli is missing" >&2
+    printf "[ERR] cannot create comments because Github Cli is missing\n" >&2
     exit 1
+  fi
+  if [[ "$_event" != "$event" ]]; then
+    printf "[WRN] invalid event '%s', requires '%s'\n" "$_event" "$event" >&2
+    return 0
   fi
 
   local tmp
@@ -43,4 +49,5 @@ _exec() {
 
 main
 
-unset _message _update _pr
+unset _message _update
+unset _event _pr

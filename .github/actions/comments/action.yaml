@@ -6,7 +6,6 @@ runs:
   using: "composite"
   steps:
     - name: create/update comments
-      if: ${{ github.event_name == 'pull_request' }}
       run: $GITHUB_ACTION_PATH/comments.sh
       shell: bash
       env:
