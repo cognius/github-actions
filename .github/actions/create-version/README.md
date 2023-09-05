@@ -22,6 +22,7 @@ for fetching old version from git history.
   uses: cognius/github-actions/.github/actions/create-version@v2
   env:
     APP_VERSION: v1.0.0
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # APP_NAME: test
     # APP_PATHS: |
     #   hello/world

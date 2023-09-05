@@ -10,3 +10,4 @@ runs:
       shell: bash
       env:
         GITHUB_PR_NUMBER: ${{ github.event.number }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
