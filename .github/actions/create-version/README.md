@@ -9,12 +9,6 @@ This action using [git-chglog][git-chglog] internally to create git tag and Gith
 This action requires **action/checkout** fetch-depth to be `0`
 for fetching old version from git history.
 
-```yaml
-- uses: actions/checkout@v3
-  with:
-    fetch-depth: 0
-```
-
 ## Usage
 
 ```yaml
@@ -22,10 +16,13 @@ jobs:
   job:
     runs-on: ubuntu-latest
     steps:
+      ## Requires to fetching git history
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Create version
         uses: cognius/github-actions/.github/actions/create-version@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_VERSION: v1.0.0
           # APP_NAME: test
           # APP_PATHS: |

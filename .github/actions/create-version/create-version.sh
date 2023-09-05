@@ -58,7 +58,7 @@ main() {
   if command -v hub >/dev/null; then
     local hub_args=("release" "create")
     if test -n "$release_notes" && test -f "$release_notes"; then
-      hub_args+=("--file" "$__note")
+      hub_args+=("--file" "$release_notes")
     fi
 
     hub_args+=("$_app_version")
