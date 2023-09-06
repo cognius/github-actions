@@ -55,11 +55,17 @@ jobs:
 List of shared actions on this repository
 
 1. `add-hosts` - add hostname aliases using **/etc/hosts** file ([here][add-hosts-action-path])
-2. `release-info` - get release information ([here][release-info-path])
-3. `example` - example action ([here][example-action-path])
+2. `comment-pr` - add comment to current PR ([here][comment-pr-action-path])
+3. `create-version` - create GitHub Release with release notes ([here][create-version-action-path])
+4. `notify-deploy` - notify member on Slack when new deployment occurred ([here][notify-deploy-action-path])
+5. `release-info` - get release information ([here][release-info-action-path])
+6. `example` - example action ([here][example-action-path])
 
 [add-hosts-action-path]: ./.github/actions/add-hosts/README.md
-[release-info-path]: ./.github/actions/release-info/README.md
+[comment-pr-action-path]: ./.github/actions/comment-pr/README.md
+[create-version-action-path]: ./.github/actions/create-version/README.md
+[notify-deploy-action-path]: ./.github/actions/notify-deploy/README.md
+[release-info-action-path]: ./.github/actions/release-info/README.md
 [example-action-path]: ./.github/actions/example/README.md
 
 ## Workflows
