@@ -54,14 +54,17 @@ jobs:
 
 List of shared actions on this repository
 
+1. `helm-install` - install/upgrade helm-charts ([here][helm-install-action])
+2. `helm-push` - build and push helm-charts package ([here][helm-push-action])
+3. `host-aliases` - add hostname aliases using **/etc/hosts** file ([here][host-aliases-action])
+4. `pr-comment` - add comment to current PR ([here][pr-comment-action])
+5. `release-create` - create GitHub Release with release notes ([here][release-create-action])
+6. `release-info` - get release information ([here][release-info-action])
+7. `release-notify` - notify member on Slack when new deployment occurred ([here][release-notify-action])
+8. `example` - example action ([here][example-action])
 
-1. `host-aliases` - add hostname aliases using **/etc/hosts** file ([here][host-aliases-action])
-2. `pr-comment` - add comment to current PR ([here][pr-comment-action])
-3. `release-create` - create GitHub Release with release notes ([here][release-create-action])
-4. `release-info` - get release information ([here][release-info-action])
-5. `release-notify` - notify member on Slack when new deployment occurred ([here][release-notify-action])
-6. `example` - example action ([here][example-action])
-
+[helm-install-action]: ./.github/actions/helm-install/README.md
+[helm-install-action]: ./.github/actions/helm-push/README.md
 [host-aliases-action]: ./.github/actions/host-aliases/README.md
 [pr-comment-action]: ./.github/actions/pr-comment/README.md
 [release-create-action]: ./.github/actions/release-create/README.md
