@@ -1,5 +1,5 @@
 {
-  "chart": "${AWS_ECR_REGISTRY:?}/helm-charts/kotejin-backoffice",
+  "chart": "${AWS_ECR_REGISTRY:?}/helm-charts/example",
   "name": "hello-test",
   "environments": {
     "dev": {
