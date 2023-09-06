@@ -12,6 +12,10 @@ jobs:
       ## To create GitHub Release
       contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Push helm-charts
         uses: cognius/github-actions/.github/actions/helm-push@v2
         env:

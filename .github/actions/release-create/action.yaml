@@ -5,7 +5,7 @@ author: Kamontat Chantrachirathumrong
 runs:
   using: "composite"
   steps:
-    - run: $GITHUB_ACTION_PATH/release-create.sh
+    - run: $GITHUB_ACTION_PATH/index.sh
       shell: bash
       env:
         GITHUB_DEFAULT_TOKEN: ${{ github.token }}
