@@ -16,6 +16,8 @@ jobs:
       AWS_EKS_CLUSTER_NAME: sumato-2
       ROOT_PATH: "${{ github.workspace }}/.tests/helm-install"
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - uses: cognius/github-actions/.github/actions/helm-install@v2
         env:
           APP_NAME: test

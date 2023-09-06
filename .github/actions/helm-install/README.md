@@ -9,6 +9,8 @@ jobs:
   job:
     runs-on: ubuntu-latest
     steps:
+      ## Checkout config file
+      - uses: actions/checkout@v3
       ## Login to AWS
       - uses: aws-actions/configure-aws-credentials@v3
       - ...
