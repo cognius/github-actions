@@ -11,7 +11,6 @@ jobs:
     env:
       DRYRUN: true
       APP_ENV: dev
-      AWS_ACCOUNT_ID: 111222333444
       AWS_REGION: us-east-1
       AWS_EKS_CLUSTER_NAME: sumato-2
       ROOT_PATH: "${{ github.workspace }}/.tests/helm-install"
@@ -21,15 +20,22 @@ jobs:
       - uses: cognius/github-actions/.github/actions/helm-install@v2
         env:
           APP_NAME: test
+          AWS_ACCOUNT_ID: 111222333444
       - uses: cognius/github-actions/.github/actions/helm-install@v2
         env:
           APP_NAME: test
           HELM_DEBUG: true
           HELM_CHART_VERSION: 0.1.1
+          AWS_ACCOUNT_ID: 111222333444
       - uses: cognius/github-actions/.github/actions/helm-install@v2
         env:
           APP_NAME: test
           HELM_RECREATE: true
+          AWS_ACCOUNT_ID: 111222333444
+      - uses: cognius/github-actions/.github/actions/helm-install@v2
+        env:
+          APP_NAME: test
+          AWS_ECR_REGISTRY: example.com
   helm-push-action:
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +48,11 @@ jobs:
           DRYRUN: true
           AWS_ACCOUNT_ID: 111222333444
           AWS_REGION: us-east-1
+      - uses: cognius/github-actions/.github/actions/helm-push@v2
+        env:
+          DRYRUN: true
+          AWS_REGION: us-east-1
+          AWS_ECR_REGISTRY: example.com
       - uses: cognius/github-actions/.github/actions/helm-push@v2
         env:
           DRYRUN: true

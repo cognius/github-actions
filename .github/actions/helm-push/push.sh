@@ -8,13 +8,18 @@ set -e #ERROR    - Force exit if error occurred.
 _prefix="${IMAGE_PREFIX:-}"
 _pkg="${CR_PACKAGE_PATH:-.cr-release-packages}"
 
-_aws_account="${AWS_ACCOUNT_ID:?}"
 _aws_region="${AWS_REGION:?}"
+_aws_account="${AWS_ACCOUNT_ID:-}"
 _aws_registry="${AWS_ECR_REGISTRY:-$_aws_account.dkr.ecr.$_aws_region.amazonaws.com}"
 
 main() {
   if ! command -v aws >/dev/null; then
     printf "[ERR] 'aws' command is required" >&2
+    exit 1
+  fi
+  if test -z "$AWS_ACCOUNT_ID" && test -z "$AWS_ECR_REGISTRY"; then
+    printf "[ERR] either '%s' or '%s' must provided" \
+      "AWS_ACCOUNT_ID" "AWS_ECR_REGISTRY" >&2
     exit 1
   fi
 

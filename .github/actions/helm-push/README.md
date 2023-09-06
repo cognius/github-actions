@@ -33,7 +33,8 @@ jobs:
 
 ### AWS account id
 
-`AWS_ACCOUNT_ID` is a AWS account id for pushing ECR (required).
+`AWS_ACCOUNT_ID` is a AWS account id for pushing ECR
+(required if `$AWS_ECR_REGISTRY` is missing).
 
 ### AWS region
 

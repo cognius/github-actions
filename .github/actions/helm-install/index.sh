@@ -20,9 +20,9 @@ _helm_chart_version="${HELM_CHART_VERSION:-}"
 _helm_uninstall_args="${HELM_UNINSTALL_ARGUMENTS:-}"
 _helm_upgrade_args="${HELM_UPGRADE_ARGUMENTS:-}"
 
-_aws_account="${AWS_ACCOUNT_ID:?}"
 _aws_region="${AWS_REGION:?}"
 _aws_eks_cluster="${AWS_EKS_CLUSTER_NAME:?}"
+_aws_account="${AWS_ACCOUNT_ID:-}"
 _aws_ecr_registry="${AWS_ECR_REGISTRY:-$_aws_account.dkr.ecr.$_aws_region.amazonaws.com}"
 
 _deploy_dir="${DEPLOY_DIR:-deploys}"
@@ -32,13 +32,17 @@ _root_path="${ROOT_PATH:-$PWD}"
 _app_path="${APP_PATH:-$_root_path/$_deploy_dir/$_app_name}"
 _conf_path="${CONFIG_PATH:-$_app_path/$_config_file}"
 
-if test -z "$AWS_ECR_REGISTRY"; then
-  export AWS_ECR_REGISTRY="$_aws_ecr_registry"
-fi
-
 main() {
   if ! command -v jq >/dev/null; then
     _error "command '%s' is missing" jq
+  fi
+  if test -z "$AWS_ACCOUNT_ID" && test -z "$AWS_ECR_REGISTRY"; then
+    printf "[ERR] either '%s' or '%s' must provided" \
+      "AWS_ACCOUNT_ID" "AWS_ECR_REGISTRY" >&2
+    exit 1
+  fi
+  if test -z "$AWS_ECR_REGISTRY"; then
+    export AWS_ECR_REGISTRY="$_aws_ecr_registry"
   fi
 
   if ! test -d "$_app_path"; then
