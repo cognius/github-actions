@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify on Slack
-        uses: cognius/github-actions/.github/actions/deploy-notify@v2
+        uses: cognius/github-actions/.github/actions/release-notify@v2
         env:
           NOTIFY_TYPE: start|success|failure|cancelled
           # NOTIFY_DISABLED: false
@@ -33,7 +33,7 @@ You can easy use `${{ job.status }}` from GitHub Context on result notify.
 
 ```yaml
 - name: Report deploy result
-  uses: cognius/github-actions/.github/actions/deploy-notify@v2
+  uses: cognius/github-actions/.github/actions/release-notify@v2
   env:
     NOTIFY_TYPE: "${{ job.status }}"
 ```
@@ -93,5 +93,5 @@ DRYRUN=true \
   SLACK_WEBHOOK=https://google.com \
   GITHUB_REPOSITORY=test/local GITHUB_REF_TYPE=branch GITHUB_REF_NAME=main \
   GITHUB_ACTOR=guest GITHUB_SHA=abc GITHUB_RUN_ID=1 \
-  ./.github/actions/deploy-notify/index.sh
+  ./.github/actions/release-notify/index.sh
 ```

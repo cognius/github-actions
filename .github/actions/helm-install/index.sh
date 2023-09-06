@@ -42,10 +42,10 @@ main() {
   fi
 
   if ! test -d "$_app_path"; then
-    _error "'%s' directory is missing (%s)" "$_deploy_dir" "$_app_path"
+    _error "'%s' directory is missing" "$_app_path"
   fi
   if ! test -f "$_conf_path"; then
-    _error "config file (%s) is missing (%s)" "$_config_file" "$_conf_path"
+    _error "config file '%s' is missing (%s)" "$_config_file" "$_conf_path"
   fi
 
   _eks_login

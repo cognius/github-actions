@@ -54,22 +54,23 @@ jobs:
 
 List of shared actions on this repository
 
-1. `deploy-notify` - notify member on Slack when new deployment occurred ([here][deploy-notify-action-path])
-2. `host-aliases` - add hostname aliases using **/etc/hosts** file ([here][host-aliases-action-path])
-3. `pr-comment` - add comment to current PR ([here][pr-comment-action-path])
-4. `release-create` - create GitHub Release with release notes ([here][release-create-action-path])
-5. `release-info` - get release information ([here][release-info-action-path])
-6. `example` - example action ([here][example-action-path])
 
-[deploy-notify-action-path]: ./.github/actions/deploy-notify/README.md
-[host-aliases-action-path]: ./.github/actions/host-aliases/README.md
-[pr-comment-action-path]: ./.github/actions/pr-comment/README.md
-[release-create-action-path]: ./.github/actions/release-create/README.md
-[release-info-action-path]: ./.github/actions/release-info/README.md
-[example-action-path]: ./.github/actions/example/README.md
+1. `host-aliases` - add hostname aliases using **/etc/hosts** file ([here][host-aliases-action])
+2. `pr-comment` - add comment to current PR ([here][pr-comment-action])
+3. `release-create` - create GitHub Release with release notes ([here][release-create-action])
+4. `release-info` - get release information ([here][release-info-action])
+5. `release-notify` - notify member on Slack when new deployment occurred ([here][release-notify-action])
+6. `example` - example action ([here][example-action])
+
+[host-aliases-action]: ./.github/actions/host-aliases/README.md
+[pr-comment-action]: ./.github/actions/pr-comment/README.md
+[release-create-action]: ./.github/actions/release-create/README.md
+[release-info-action]: ./.github/actions/release-info/README.md
+[release-notify-action]: ./.github/actions/release-notify/README.md
+[example-action]: ./.github/actions/example/README.md
 
 ## Workflows
 
-1. `example` - example workflow ([here][example-workflow-path])
+1. `example` - example workflow ([here][example-workflow])
 
-[example-workflow-path]: ./.github/workflows/README.md
+[example-workflow]: ./.github/workflows/README.md

@@ -6,33 +6,6 @@ on:
 jobs:
   example-workflow:
     uses: cognius/github-actions/.github/workflows/example.yaml@v2
-  deploy-notify-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cognius/github-actions/.github/actions/deploy-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: start
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-      - uses: cognius/github-actions/.github/actions/deploy-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: success
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-      - uses: cognius/github-actions/.github/actions/deploy-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: failure
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-      - uses: cognius/github-actions/.github/actions/deploy-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: cancelled
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
   helm-install-action:
     runs-on: ubuntu-latest
     env:
@@ -124,3 +97,30 @@ jobs:
       - run: test -n "${{ steps.info.outputs.app-version }}"
       - run: test -n "${{ steps.info-2.outputs.app-name }}"
       - run: test -n "${{ steps.info-2.outputs.environment }}"
+  release-notify-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/release-notify@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: start
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
+      - uses: cognius/github-actions/.github/actions/release-notify@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: success
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
+      - uses: cognius/github-actions/.github/actions/release-notify@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: failure
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
+      - uses: cognius/github-actions/.github/actions/release-notify@v2
+        env:
+          DRYRUN: true
+          NOTIFY_TYPE: cancelled
+          APP_NAME: test
+          SLACK_WEBHOOK: https://google.com
