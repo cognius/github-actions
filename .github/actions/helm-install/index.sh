@@ -126,7 +126,7 @@ _helm_uninstall() {
   # shellcheck disable=SC2206
   test -n "$_helm_uninstall_args" && args+=($_helm_uninstall_args)
 
-  __exec helm "${args[@]}"
+  _exec helm "${args[@]}"
 }
 
 _config_get() {
