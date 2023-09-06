@@ -1,0 +1,14 @@
+name: Push helm
+description: Publish helm-charts on Github Release and push to registry
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - run: $GITHUB_ACTION_PATH/add-repo.sh
+      shell: bash
+    - uses: helm/chart-releaser-action@v1.5.0
+      env:
+        CR_TOKEN: ${{ github.token }}
+    - run: $GITHUB_ACTION_PATH/push.sh
+      shell: bash

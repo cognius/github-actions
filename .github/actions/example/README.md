@@ -18,5 +18,5 @@ jobs:
 To testing locally without Github Action.
 
 ```bash
-./.github/actions/example/example.sh
+./.github/actions/example/index.sh
 ```

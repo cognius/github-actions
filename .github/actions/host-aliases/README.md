@@ -1,4 +1,4 @@
-# Add host aliases action
+# Host aliases action
 
 Create host aliases using **/etc/hosts** file
 
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create host aliases
-        uses: cognius/github-actions/.github/actions/add-hosts@v2
+        uses: cognius/github-actions/.github/actions/host-aliases@v2
         env:
           HOSTS: hostname.com,newhostname.com
           # HOSTS_LOCALHOST: 127.0.0.1
@@ -46,5 +46,5 @@ To testing locally without Github Action.
 ```bash
 HOSTS=hostname.com,newhostname.io \
   HOSTS_FILE=/dev/null \
-  ./.github/actions/add-hosts/add-hosts.sh
+  ./.github/actions/host-aliases/index.sh
 ```

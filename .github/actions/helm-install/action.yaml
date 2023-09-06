@@ -1,5 +1,5 @@
-name: Example
-description: Example action
+name: Install helm
+description: Install helm-charts to target Kubernetes
 author: Kamontat Chantrachirathumrong
 
 runs:

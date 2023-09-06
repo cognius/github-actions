@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify on Slack
-        uses: cognius/github-actions/.github/actions/notify-deploy@v2
+        uses: cognius/github-actions/.github/actions/deploy-notify@v2
         env:
           NOTIFY_TYPE: start|success|failure|cancelled
           # NOTIFY_DISABLED: false
@@ -26,21 +26,21 @@ jobs:
 
 ### Notify type
 
-A type of notification, either type has it own message format.
+`NOTIFY_TYPE` is a type of notification, either type has it own message format.
 Possible values are 'start', 'failure', 'success', 'complete'.
 
 You can easy use `${{ job.status }}` from GitHub Context on result notify.
 
 ```yaml
 - name: Report deploy result
-  uses: cognius/github-actions/.github/actions/notify-deploy@v2
+  uses: cognius/github-actions/.github/actions/deploy-notify@v2
   env:
     NOTIFY_TYPE: "${{ job.status }}"
 ```
 
 ### Notify disabled
 
-A flag to disable notification on special condition (default is **false**).
+`NOTIFY_DISABLED` flag to disable notification on special condition (default is **false**).
 Only **empty string** and **false** are considers as enabled;
 otherwise, will disable notification.
 
@@ -57,32 +57,31 @@ NOTIFY_DISABLED=string
 
 ### Notify action
 
-A freeform string (preferrable verb) describe what is action current perform.
+`NOTIFY_ACTION` is a freeform string (preferrable verb) describe what is action current perform.
 
 ### Notify step
 
-A freeform string (preferrable verb) describe
+`NOTIFY_STEP` is a freeform string (preferrable verb) describe
 which steps on action that report result.
 
 ### Application name
 
-A deploying application name. This is requires fields.
+`APP_NAME` is a name of deploying application (required).
 
 ### Application version
 
-A deploying application version (default is **empty**).
+`APP_VERSION` is a version of deploying application (default is **empty**).
 
 ### Application environment
 
-A deploying environment (default is **empty**).
+`APP_ENV` is a deploying environment (default is **empty**).
 This only matter when deploy on `production` environment.
 
 ### Slack webhook
 
 > https://api.slack.com/messaging/webhooks
 
-A slack webhook url.
-This is a requires field.
+`SLACK_WEBHOOK` is a URL string of slack webhook (required).
 
 ## Development
 
@@ -94,5 +93,5 @@ DRYRUN=true \
   SLACK_WEBHOOK=https://google.com \
   GITHUB_REPOSITORY=test/local GITHUB_REF_TYPE=branch GITHUB_REF_NAME=main \
   GITHUB_ACTOR=guest GITHUB_SHA=abc GITHUB_RUN_ID=1 \
-  ./.github/actions/notify-deploy/notify-deploy.sh
+  ./.github/actions/deploy-notify/index.sh
 ```

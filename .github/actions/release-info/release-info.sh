@@ -19,7 +19,7 @@ _docker_file_paths="${DOCKER_FILE_PATHS:-}"
 ## Set by Github Action
 _action_path="${GITHUB_ACTION_PATH:?}"
 ## Set by bash
-_root_path="${ROOT_WD:-$PWD}"
+_root_path="${ROOT_PATH:-$PWD}"
 
 ######################################
 

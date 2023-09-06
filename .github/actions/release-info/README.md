@@ -28,7 +28,7 @@ jobs:
           # APP_PATHS: test=packages/test
           # DOCKER_CONTEXT_PATHS: test=
           # DOCKER_FILE_PATHS: test=packages/test/Dockerfile
-          # ROOT_WD=/
+          # ROOT_PATH=/
 ```
 
 ## Environment
@@ -84,7 +84,7 @@ APP_PATHS='appA= appB=packages/b'
 
 ### Root directory
 
-`ROOT_WD` is a root directory for all relative path to resolve to (default is `$PWD`)
+`ROOT_PATH` is a root directory for all relative path to resolve to (default is `$PWD`)
 
 ### Version prefix
 

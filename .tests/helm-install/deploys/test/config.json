@@ -1,0 +1,10 @@
+{
+  "chart": "${AWS_ECR_REGISTRY:?}/helm-charts/kotejin-backoffice",
+  "name": "hello-test",
+  "environments": {
+    "dev": {
+      "namespace": "dev",
+      "values": "values.yaml"
+    }
+  }
+}

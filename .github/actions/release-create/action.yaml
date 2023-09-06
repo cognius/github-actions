@@ -1,12 +1,11 @@
-name: Create version
+name: Create release
 description: Create Github release and add tags
 author: Kamontat Chantrachirathumrong
 
 runs:
   using: "composite"
   steps:
-    - name: Create version
+    - run: $GITHUB_ACTION_PATH/release-create.sh
       shell: bash
-      run: $GITHUB_ACTION_PATH/create-version.sh
       env:
         GITHUB_DEFAULT_TOKEN: ${{ github.token }}

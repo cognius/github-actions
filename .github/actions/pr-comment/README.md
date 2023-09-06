@@ -18,7 +18,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: cognius/github-actions/.github/actions/comment-pr@v2
+      - uses: cognius/github-actions/.github/actions/pr-comment@v2
         env:
           COMMENT_MESSAGE: hello world
           # COMMENT_UPDATE: true
@@ -48,5 +48,5 @@ To testing locally without Github Action.
 DRYRUN=true COMMENT_MESSAGE="hello world" \
   GITHUB_TOKEN=example GITHUB_REPOSITORY=test/local \
   GITHUB_EVENT_NAME=pull_request GITHUB_PR_NUMBER=1 \
-  ./.github/actions/comment-pr/comment-pr.sh
+  ./.github/actions/pr-comment/index.sh
 ```

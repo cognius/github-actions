@@ -5,6 +5,5 @@ author: Kamontat Chantrachirathumrong
 runs:
   using: "composite"
   steps:
-    - name: Send message to slack
-      run: $GITHUB_ACTION_PATH/notify-deploy.sh
+    - run: $GITHUB_ACTION_PATH/index.sh
       shell: bash

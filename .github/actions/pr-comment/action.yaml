@@ -6,7 +6,7 @@ runs:
   using: "composite"
   steps:
     - name: create/update comments
-      run: $GITHUB_ACTION_PATH/comment-pr.sh
+      run: $GITHUB_ACTION_PATH/index.sh
       shell: bash
       env:
         GITHUB_DEFAULT_TOKEN: ${{ github.token }}
