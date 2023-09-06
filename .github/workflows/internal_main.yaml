@@ -41,7 +41,7 @@ jobs:
       AWS_ACCOUNT_ID: 111222333444
       AWS_REGION: us-east-1
       AWS_EKS_CLUSTER_NAME: sumato-2
-      ROOT_PATH: .tests/helm-install
+      ROOT_PATH: $PWD/.tests/helm-install
     steps:
       - uses: cognius/github-actions/.github/actions/helm-install@v2
         env:
