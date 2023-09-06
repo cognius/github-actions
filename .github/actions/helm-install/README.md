@@ -1,6 +1,6 @@
 # Install helm action
 
-Install helm-charts to target Kubernetes
+Install helm-charts to target Kubernetes.
 
 ## Usage
 
@@ -38,6 +38,70 @@ jobs:
           # CONFIG_PATH: /apps/configs/config.json
           # ROOT_PATH: /
 ```
+
+## Configuration
+
+The default config path should be at
+`<ROOT_PATH>/deploys/<APP_NAME>/config.json`
+(customizable at [CONFIG_PATH](#configuration-path)).
+This file will evaluate with variables support,
+meaning all environment variables will available within this file
+using bash variable syntax.
+
+```json
+{
+  "type": "[type]",
+  "chart": "${AWS_ECR_REGISTRY:?}/helm-charts/<chart_name>",
+  "version": "[chart-version]",
+  "name": "<name>",
+  "environments": {
+    "<environment_name>": {
+      "name": "[name]",
+      "namespace": "<kube_namespace>",
+      "values": "<values-file.yaml>"
+    }
+  }
+}
+```
+
+Notes: `[xxx]` is optional values, while `<xxx>` is requires.
+
+### Chart type
+
+`type` is a helm-chart registry type.
+Currently we support only **oci** (default is **oci**)
+
+### Chart url
+
+`chart` is a chart url to download (required).
+When `type` is **oci** is should be OCI registry (e.g. ECR or DockerHub).
+
+### Chart version
+
+`version` is a chart version to use (default is **latest**).
+
+### Release name
+
+`name` is a release name when install or upgrade new helm-charts to the cluster.
+
+### Environments object
+
+`environments` is a object of each environment
+where key is environment name and value is environment configs.
+
+#### Environment release name
+
+`environments.<env>.name` is a optional release name override default `name`
+on each environment.
+
+#### Environment namespace
+
+`environments.<env>.namespace` is a target Kubernetes namespace to deploy.
+
+#### Environment values
+
+`environments.<env>.values` is a values file to
+customize default helm-charts **values.yaml**.
 
 ## Environment
 
