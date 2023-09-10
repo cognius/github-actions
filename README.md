@@ -61,7 +61,8 @@ List of shared actions on this repository
 5. `release-create` - create GitHub Release with release notes ([here][release-create-action])
 6. `release-info` - get release information ([here][release-info-action])
 7. `release-notify` - notify member on Slack when new deployment occurred ([here][release-notify-action])
-8. `example` - example action ([here][example-action])
+8. `server-script` - run script on target server ([here][server-script][server-script-action])
+9. `example` - example action ([here][example-action])
 
 [helm-install-action]: ./.github/actions/helm-install/README.md
 [helm-install-action]: ./.github/actions/helm-push/README.md
@@ -70,6 +71,7 @@ List of shared actions on this repository
 [release-create-action]: ./.github/actions/release-create/README.md
 [release-info-action]: ./.github/actions/release-info/README.md
 [release-notify-action]: ./.github/actions/release-notify/README.md
+[server-script-action]: ./.github/actions/server-script/README.md
 [example-action]: ./.github/actions/example/README.md
 
 ## Workflows
