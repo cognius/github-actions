@@ -3,6 +3,9 @@ name: Main
 on:
   push:
 
+env:
+  TEST_DIRECTORY: "${{ github.workspace }}/tests"
+
 jobs:
   example-workflow:
     uses: cognius/github-actions/.github/workflows/example.yaml@v2
@@ -13,7 +16,7 @@ jobs:
       APP_ENV: dev
       AWS_REGION: us-east-1
       AWS_EKS_CLUSTER_NAME: sumato-2
-      ROOT_PATH: "${{ github.workspace }}/.tests/helm-install"
+      ROOT_PATH: "${{ env.TEST_DIRECTORY }}/helm-install"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -137,3 +140,20 @@ jobs:
           NOTIFY_TYPE: cancelled
           APP_NAME: test
           SLACK_WEBHOOK: https://google.com
+  server-script-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/server-script@v2
+        env:
+          DRYRUN: true
+          SERVER_TARGET: 127.0.0.1
+          SERVER_USERNAME: user
+          SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
+          SERVER_SCRIPT: pwd
+      - uses: cognius/github-actions/.github/actions/server-script@v2
+        env:
+          DRYRUN: true
+          SERVER_TARGET: 127.0.0.1
+          SERVER_USERNAME: user
+          SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
+          SERVER_FILE: "${{ env.TEST_DIRECTORY }}/server-script/test.sh"

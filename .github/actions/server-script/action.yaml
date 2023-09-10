@@ -1,0 +1,14 @@
+name: Server script
+description: Run script on server using ssh
+author: Kamontat Chantrachirathumrong
+
+runs:
+  using: "composite"
+  steps:
+    - run: $GITHUB_ACTION_PATH/index.sh
+      shell: bash
+      env:
+        TEMP_PRIVATE_KEY: /tmp/private-key.pem
+    - run: rm -rf "/tmp/private-key.pem"
+      if: always()
+      shell: bash
