@@ -32,6 +32,7 @@ _create_known_hosts() {
   if test -n "$DRYRUN"; then
     printf 'append "%s %s" to known_hosts\n' "$_server" "$_fingerprint"
   else
+    test -d "$HOME/.ssh" || mkdir "$HOME/.ssh"
     echo "$_server $_fingerprint" >>"$HOME/.ssh/known_hosts"
   fi
 }
