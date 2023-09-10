@@ -39,7 +39,7 @@ _create_known_hosts() {
 
 _server_connect() {
   local script="${SERVER_CONNECT_SCRIPT:?}"
-  _exec ssh -i "$_private_key" -t "$script" "$_connection_string"
+  _exec ssh -i "$_private_key" "$_connection_string" -t "$script"
 }
 
 _server_copy() {
