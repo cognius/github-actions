@@ -159,3 +159,9 @@ jobs:
           SERVER_PUBLIC_FINGERPRINT: ssh-ed25519 AAAAC3N
           SERVER_COPY_BASE: "${{ github.workspace }}/tests/server"
           SERVER_COPY_DEST: server-tests
+  greeting-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/greeting@v2
+        with:
+          who-to-greet: Very long name

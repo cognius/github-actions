@@ -1,0 +1,26 @@
+{
+  "folders": [
+    {
+      "name": "actions",
+      "path": "actions"
+    },
+    {
+      "name": "github/actions",
+      "path": ".github/actions"
+    },
+    {
+      "name": "github/workflows",
+      "path": ".github/workflows"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "yaml.schemas": {
+      "https://json.schemastore.org/github-action.json": ".github/actions/**/*.yaml",
+      "https://json.schemastore.org/github-workflow.json": ".github/workflows/**/*.yaml"
+    }
+  }
+}
