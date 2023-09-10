@@ -1,5 +1,5 @@
-name: Server script
-description: Run script on server using ssh
+name: Server
+description: Perform action to target server
 author: Kamontat Chantrachirathumrong
 
 runs:
