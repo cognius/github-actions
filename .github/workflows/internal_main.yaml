@@ -3,9 +3,6 @@ name: Main
 on:
   push:
 
-env:
-  TEST_DIRECTORY: "${{ github.workspace }}/tests"
-
 jobs:
   example-workflow:
     uses: cognius/github-actions/.github/workflows/example.yaml@v2
@@ -16,7 +13,7 @@ jobs:
       APP_ENV: dev
       AWS_REGION: us-east-1
       AWS_EKS_CLUSTER_NAME: sumato-2
-      ROOT_PATH: "${{ env.TEST_DIRECTORY }}/helm-install"
+      ROOT_PATH: "${{ github.workspace }}/tests/helm-install"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -156,4 +153,4 @@ jobs:
           SERVER_TARGET: 127.0.0.1
           SERVER_USERNAME: user
           SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
-          SERVER_FILE: "${{ env.TEST_DIRECTORY }}/server-script/test.sh"
+          SERVER_FILE: "${{ github.workspace }}/tests/server-script/test.sh"
