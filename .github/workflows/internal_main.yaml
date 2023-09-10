@@ -147,6 +147,7 @@ jobs:
           SERVER_USERNAME: user
           SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
           SERVER_SCRIPT: pwd
+      - uses: actions/checkout@v3
       - uses: cognius/github-actions/.github/actions/server-script@v2
         env:
           DRYRUN: true
