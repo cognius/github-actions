@@ -27,6 +27,7 @@ main() {
 
 _create_private_key() {
   echo "$_private_key_base64" | base64 -d >"$_private_key"
+  chmod 400 "$_private_key"
 }
 _create_known_hosts() {
   if test -n "$DRYRUN"; then
