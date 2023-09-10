@@ -137,21 +137,25 @@ jobs:
           NOTIFY_TYPE: cancelled
           APP_NAME: test
           SLACK_WEBHOOK: https://google.com
-  server-script-action:
+  server-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: cognius/github-actions/.github/actions/server-script@v2
+      - uses: cognius/github-actions/.github/actions/server@v2
         env:
           DRYRUN: true
           SERVER_TARGET: 127.0.0.1
           SERVER_USERNAME: user
           SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
-          SERVER_SCRIPT: pwd
+          SERVER_PUBLIC_FINGERPRINT: ssh-ed25519 AAAAC3N
+          SERVER_CONNECT_SCRIPT: pwd
       - uses: actions/checkout@v3
-      - uses: cognius/github-actions/.github/actions/server-script@v2
+      - uses: cognius/github-actions/.github/actions/server@v2
         env:
           DRYRUN: true
+          SERVER_ACTION: copy
           SERVER_TARGET: 127.0.0.1
           SERVER_USERNAME: user
           SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
-          SERVER_FILE: "${{ github.workspace }}/tests/server-script/test.sh"
+          SERVER_PUBLIC_FINGERPRINT: ssh-ed25519 AAAAC3N
+          SERVER_COPY_BASE: "${{ github.workspace }}/tests/server"
+          SERVER_COPY_DEST: server-tests
