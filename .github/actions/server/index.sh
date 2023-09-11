@@ -45,7 +45,7 @@ _server_connect() {
 
 _server_copy() {
   local base="${SERVER_COPY_BASE:?}" target="${SERVER_COPY_DEST:-}"
-  _exec scp -i "$_private_key" "$base" "$_connection_string:$target"
+  _exec scp -ri "$_private_key" "$base" "$_connection_string:$target"
 }
 
 _exec() {
