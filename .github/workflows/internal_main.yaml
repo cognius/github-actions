@@ -164,7 +164,7 @@ jobs:
     steps:
       - uses: cognius/github-actions/.github/actions/greeting@v2
         with:
-          who-to-greet: Very long name
+          milliseconds: 25
   actions:
     runs-on: ubuntu-latest
     steps:
