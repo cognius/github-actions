@@ -173,13 +173,15 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           package_json_file: actions/package.json
-          run_install: true
       - name: Set up nodejs
         uses: actions/setup-node@v3
         with:
           cache: pnpm
           node-version-file: actions/package.json
           cache-dependency-path: actions/pnpm-lock.yaml
+      - name: Install actions dependencies
+        working-directory: actions
+        run: pnpm install
       - name: Lint actions
         working-directory: actions
         run: pnpm lint
