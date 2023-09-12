@@ -2,13 +2,12 @@ name: Greeting
 description: Greet someone and record the time
 author: Kamontat Chantrachirathumrong
 inputs:
-  who-to-greet: # id of input
-    description: "Who to greet"
+  milliseconds:
+    description: Sleep times (ms)
     required: true
-    default: "World"
 outputs:
-  time: # id of output
-    description: "The time we greeted you"
+  time:
+    description: "Your output description here"
 runs:
-  using: "node16"
-  main: "index.js"
+  using: node20
+  main: index.js
