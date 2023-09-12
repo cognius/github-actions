@@ -165,3 +165,27 @@ jobs:
       - uses: cognius/github-actions/.github/actions/greeting@v2
         with:
           who-to-greet: Very long name
+  actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          package_json_file: actions/package.json
+          run_install: true
+      - name: Set up nodejs
+        uses: actions/setup-node@v3
+        with:
+          cache: pnpm
+          node-version-file: actions/package.json
+          cache-dependency-path: actions/pnpm-lock.yaml
+      - name: Lint actions
+        working-directory: actions
+        run: pnpm lint
+      - name: Test actions
+        working-directory: actions
+        run: pnpm test
+      - name: Build actions
+        working-directory: actions
+        run: pnpm build
