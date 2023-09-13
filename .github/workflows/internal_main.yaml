@@ -189,3 +189,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: cognius/github-actions/.github/actions/example-ts@v2
+  setup-asdf-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cognius/github-actions/.github/actions/setup-asdf@v2
+      - run: asdf --version

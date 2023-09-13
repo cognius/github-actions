@@ -13,7 +13,7 @@ This project provides 2 types of Reusable Github-Action:
 ### Reusable actions
 
 > Example: [example-action][example-action-path]
-> 
+>
 > ref: https://docs.github.com/en/actions/creating-actions/about-custom-actions
 
 To reuse actions:
@@ -31,10 +31,18 @@ jobs:
       # - uses: cognius/github-actions/.github/actions/example@v2
 ```
 
+#### Actions notes
+
+For an actions contains **index.js** and **index.js.map**
+is a compiled actions, you will find the original source codes
+from [actions][actions-src] directory.
+
+[actions-src]: ./actions
+
 ### Reusable workflows
 
 > Example: [example-workflow][example-workflow-path]
-> 
+>
 > ref: https://docs.github.com/en/actions/using-workflows/reusing-workflows
 
 To reuse workflows:

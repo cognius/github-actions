@@ -112,6 +112,9 @@ const builder = Config.builder({
   externals: {
     encoding: "encoding",
   },
+  resolve: {
+    tsConfigPath: "tsconfig.json",
+  },
 }).define("module", (config, name: string) => {
   const basepath = relative("src", name)
   return config

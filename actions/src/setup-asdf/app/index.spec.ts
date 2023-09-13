@@ -10,6 +10,7 @@ import { run, skippedSetup } from "."
 import { mock } from "@utils/tests/mocks"
 
 jest.mock("@actions/core")
+jest.mock("@actions/cache")
 jest.mock("@actions/exec")
 jest.mock("@actions/io")
 
