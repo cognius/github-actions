@@ -9,14 +9,15 @@
     "lint": "eslint **/*.ts",
     "format": "prettier --write .",
     "build": "rspack build",
-    "test": "jest test"
+    "test": "jest"
   },
   "dependencies": {
     "@actions/cache": "3.2.2",
     "@actions/core": "1.10.0",
     "@actions/exec": "1.1.1",
     "@actions/github": "5.1.1",
-    "@actions/http-client": "2.1.1"
+    "@actions/http-client": "2.1.1",
+    "@actions/io": "1.1.3"
   },
   "devDependencies": {
     "@rspack/cli": "0.3.2",
@@ -84,9 +85,5 @@
     "tabWidth": 2,
     "semi": false,
     "singleQuote": false
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
   }
 }

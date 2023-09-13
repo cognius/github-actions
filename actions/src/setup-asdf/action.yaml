@@ -1,0 +1,12 @@
+name: Set up asdf
+description: Set up asdf and install tools based on .tool-version file
+author: Kamontat Chantrachirathumrong
+
+inputs:
+  ref:
+    description: asdf reference to install
+    default: master
+
+runs:
+  using: node20
+  main: index.js

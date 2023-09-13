@@ -78,7 +78,7 @@ class Config<
     this.callbacks = {}
   }
 
-  setCallback<
+  define<
     Name extends string,
     CB extends Callback<ConfigWrapper, ConfigWrapper>,
   >(name: Name, callback: CB): Config<Conf, Merge<Callbacks, Name, CB>> {
@@ -86,7 +86,7 @@ class Config<
     return this as unknown as Config<Conf, Merge<Callbacks, Name, CB>>
   }
 
-  useCallback<Name extends keyof Callbacks>(
+  use<Name extends keyof Callbacks>(
     name: Name,
     ...args: OmitFirst<Parameters<Callbacks[Name]>>
   ): Config<ReturnType<Callbacks[Name]>, Callbacks> {
@@ -112,7 +112,7 @@ const builder = Config.builder({
   externals: {
     encoding: "encoding",
   },
-}).setCallback("module", (config, name: string) => {
+}).define("module", (config, name: string) => {
   const basepath = relative("src", name)
   return config
     .addEntryByName(name, basepath)
@@ -120,4 +120,7 @@ const builder = Config.builder({
     .copy(name, basepath, "action.yaml")
 })
 
-export default builder.useCallback("module", "greeting").build()
+export default builder
+  .use("module", "example-ts")
+  .use("module", "setup-asdf")
+  .build()
