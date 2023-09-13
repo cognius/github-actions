@@ -1,0 +1,1 @@
+!function(){var r={9283:function(r,t,o){throw Error("Failed to resolve /Users/kamontat/Desktop/Work/github-actions/actions/src/example-ts/pre.ts in project root")}},t={};!function o(e){var s=t[e];if(void 0!==s)return s.exports;var n=t[e]={exports:{}};return r[e](n,n.exports,o),n.exports}("9283")}();

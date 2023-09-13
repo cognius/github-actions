@@ -1,31 +1,17 @@
-import { homedir } from "node:os"
-import { existsSync } from "node:fs"
-import { join } from "node:path"
+import type { ActionRunner } from "@utils/types/actions"
+import type { SetupAsdfInput } from "./types"
 
-import {
-  debug,
-  info,
-  getInput,
-  exportVariable,
-  addPath,
-  setFailed,
-} from "@actions/core"
+import { existsSync } from "node:fs"
+
+import { debug, info, exportVariable, addPath, setFailed } from "@actions/core"
 import { which } from "@actions/io"
 
 import { exec, execWithOptions } from "@utils/executors"
-import { uploadCache, downloadCache, CacheKey } from "@utils/caches"
 
-export const skippedSetup =
-  "Found asdf command on current environment, skipped setup"
+import { skippedSetup } from "./constants"
 
-export const run = async (): Promise<void> => {
+export const run: ActionRunner<SetupAsdfInput> = async ({ ref, asdfDir }) => {
   try {
-    const ref = getInput("ref", { required: true })
-    const asdfDir = join(homedir(), ".asdf")
-
-    const cacheKey = CacheKey.builder("asdf").add(ref)
-    await downloadCache(cacheKey, asdfDir)
-
     const path = await which("asdf", false)
     if ((path?.length ?? 0) > 0) {
       debug(skippedSetup)
@@ -58,8 +44,6 @@ export const run = async (): Promise<void> => {
         asdfDir
       )
     }
-
-    await uploadCache(cacheKey, asdfDir)
   } catch (error) {
     setFailed(error as Error)
   }

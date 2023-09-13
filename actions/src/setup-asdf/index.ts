@@ -1,3 +1,4 @@
 import { run } from "./app"
+import { defaultInput } from "./app/constants"
 
-void run()
+void run(defaultInput)

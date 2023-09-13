@@ -9,4 +9,6 @@ inputs:
 
 runs:
   using: node20
+  pre: pre.js
   main: index.js
+  post: post.js

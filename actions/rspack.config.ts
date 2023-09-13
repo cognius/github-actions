@@ -1,4 +1,6 @@
 import type { Configuration } from "@rspack/cli"
+
+import { existsSync } from "node:fs"
 import { resolve } from "node:path"
 
 type Callback<Conf, NewConf> = (config: Conf, ...args: any) => NewConf
@@ -10,21 +12,30 @@ type OmitFirst<T extends any[]> = T extends [any, ...infer R] ? R : never
 class ConfigWrapper {
   constructor(private readonly base: Configuration) {}
 
-  setEntry(input: Exclude<Configuration["entry"], undefined>): this {
-    this.base.entry = input
+  setEntry(
+    input: Exclude<Configuration["entry"], undefined>,
+    condition?: () => boolean
+  ): this {
+    if (condition === undefined || condition()) {
+      this.base.entry = input
+    }
+
     return this
   }
 
   addEntry(
-    input: Exclude<Configuration["entry"], string | string[] | undefined>
+    input: Exclude<Configuration["entry"], string | string[] | undefined>,
+    condition?: () => boolean
   ): this {
     const entry =
       typeof this.base.entry === "object" ? this.base.entry ?? {} : {}
-    this.base.entry = {
-      ...entry,
-      ...input,
-    }
-    return this
+    return this.setEntry(
+      {
+        ...entry,
+        ...input,
+      },
+      condition
+    )
   }
 
   addEntryByName(
@@ -32,15 +43,15 @@ class ConfigWrapper {
     input: Exclude<
       Configuration["entry"],
       string | string[] | undefined
-    >[string]
+    >[string],
+    condition?: () => boolean
   ): this {
-    const entry =
-      typeof this.base.entry === "object" ? this.base.entry ?? {} : {}
-    this.base.entry = {
-      ...entry,
-      [name]: input,
-    }
-    return this
+    return this.addEntry(
+      {
+        [name]: input,
+      },
+      condition
+    )
   }
 
   copy(name: string, basepath: string, ...paths: string[]): this {
@@ -107,7 +118,7 @@ const builder = Config.builder({
   target: "node",
   output: {
     path: relative("..", ".github", "actions"),
-    filename: "[name]/index.js",
+    filename: "[name].js",
   },
   externals: {
     encoding: "encoding",
@@ -117,8 +128,13 @@ const builder = Config.builder({
   },
 }).define("module", (config, name: string) => {
   const basepath = relative("src", name)
+  const preScript = resolve(basepath, "pre.ts")
+  const postScript = resolve(basepath, "post.ts")
+
   return config
-    .addEntryByName(name, basepath)
+    .addEntryByName(`${name}/index`, basepath)
+    .addEntryByName(`${name}/pre`, preScript, () => existsSync(preScript))
+    .addEntryByName(`${name}/post`, postScript, () => existsSync(postScript))
     .copy(name, basepath, "README.md")
     .copy(name, basepath, "action.yaml")
 })

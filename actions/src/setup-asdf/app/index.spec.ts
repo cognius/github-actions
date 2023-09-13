@@ -1,13 +1,16 @@
 import fs from "node:fs"
-import os from "node:os"
 
-import { debug, setFailed, getInput } from "@actions/core"
+import { debug, setFailed } from "@actions/core"
+import { saveCache, restoreCache, isFeatureAvailable } from "@actions/cache"
 import { exec } from "@actions/exec"
 import { which } from "@actions/io"
 
-import { run, skippedSetup } from "."
+import { run } from "."
+import { skippedSetup } from "./constants"
 
 import { mock } from "@utils/tests/mocks"
+import { preAction } from "./hooks/pre"
+import { postAction } from "./hooks/post"
 
 jest.mock("@actions/core")
 jest.mock("@actions/cache")
@@ -18,7 +21,7 @@ describe("setup-asdf action", () => {
   test("if asdf already installed", async () => {
     mock(which).mockResolvedValueOnce("/usr/bin/asdf")
 
-    await run()
+    await run({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
 
     expect(debug).toHaveBeenCalledTimes(1)
     expect(debug).toHaveBeenCalledWith(skippedSetup)
@@ -28,7 +31,7 @@ describe("setup-asdf action", () => {
     const error = new Error("Something went wrong")
     mock(which).mockRejectedValueOnce(error)
 
-    await run()
+    await run({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
 
     expect(setFailed).toHaveBeenCalledTimes(1)
     expect(setFailed).toHaveBeenCalledWith(error)
@@ -37,7 +40,7 @@ describe("setup-asdf action", () => {
   test("impossible case: where which command return undefined", async () => {
     mock(which).mockResolvedValueOnce(undefined as unknown as string)
 
-    await run()
+    await run({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
 
     expect(setFailed).not.toHaveBeenCalled()
     expect(exec).toHaveBeenCalled()
@@ -45,12 +48,10 @@ describe("setup-asdf action", () => {
 
   test("if asdf is downloaded but not install", async () => {
     jest.spyOn(fs, "existsSync").mockReturnValueOnce(true)
-    jest.spyOn(os, "homedir").mockReturnValueOnce("/tmp")
 
     mock(which).mockResolvedValueOnce("")
-    mock(getInput).mockReturnValueOnce("master")
 
-    await run()
+    await run({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
 
     const options = { cwd: "/tmp/.asdf" }
     expect(exec).toHaveBeenCalledTimes(3)
@@ -76,12 +77,10 @@ describe("setup-asdf action", () => {
 
   test("if asdf never download", async () => {
     jest.spyOn(fs, "existsSync").mockReturnValueOnce(false)
-    jest.spyOn(os, "homedir").mockReturnValueOnce("/tmp")
 
     mock(which).mockResolvedValueOnce("")
-    mock(getInput).mockReturnValueOnce("master")
 
-    await run()
+    await run({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
 
     expect(exec).toHaveBeenCalledTimes(1)
     expect(exec).toHaveBeenCalledWith("git", [
@@ -94,6 +93,18 @@ describe("setup-asdf action", () => {
       "https://github.com/asdf-vm/asdf.git",
       "/tmp/.asdf",
     ])
+  })
+
+  test("preAction should call restoreCache", async () => {
+    mock(isFeatureAvailable).mockReturnValueOnce(true)
+    await preAction({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
+    expect(restoreCache).toHaveBeenCalledTimes(1)
+  })
+
+  test("postAction should call saveCache", async () => {
+    mock(isFeatureAvailable).mockReturnValueOnce(true)
+    await postAction({ name: "asdf", asdfDir: "/tmp/.asdf", ref: "master" })
+    expect(saveCache).toHaveBeenCalledTimes(1)
   })
 
   afterAll(() => {
