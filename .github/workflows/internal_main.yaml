@@ -198,7 +198,7 @@ jobs:
           workdir: "${{ github.workspace }}/tests/asdf"
           tool_install: true
       - run: asdf --version
-      - run: k6 --version
+      - run: k6 version
         working-directory: "${{ github.workspace }}/tests/asdf"
       - run: helm --version
         working-directory: "${{ github.workspace }}/tests/asdf"
