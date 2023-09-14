@@ -11,7 +11,7 @@ _hostlocal="${HOSTS_LOCALHOST:-127.0.0.1}"
 _hostfile="${HOSTS_FILE:-/etc/hosts}"
 
 for _host in ${_hosts//,/ }; do
-    echo "$_hostlocal  $_host" | sudo tee -a "$_hostfile"
+  echo "$_hostlocal  $_host" | sudo tee -a "$_hostfile"
 done
 
 unset _hosts _host _hostlocal _hostfile
