@@ -193,4 +193,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: cognius/github-actions/.github/actions/setup-asdf@v2
+        with:
+          workdir: "${{ github.workspace }}/tests/asdf"
+          tool_install: true
       - run: asdf --version
+      - run: k6 --version
+        working-directory: "${{ github.workspace }}/tests/asdf"
+      - run: helm --version
+        working-directory: "${{ github.workspace }}/tests/asdf"

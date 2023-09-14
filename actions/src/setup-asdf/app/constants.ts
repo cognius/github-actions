@@ -12,4 +12,8 @@ export const defaultInput: SetupAsdfInput = {
   name: "asdf",
   ref: getInput("ref", { required: true }),
   asdfDir: join(homedir(), ".asdf"),
+  workDir: getInput("workdir", { required: true }),
+  tool: {
+    install: getInput("tool_install", { required: true }) === "true",
+  },
 }
