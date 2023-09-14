@@ -135,7 +135,6 @@ const installTool = async ({
       continue
     }
 
-    info(`Installing ${plugin} plugin...`)
     await exec(
       "asdf",
       "plugin",
