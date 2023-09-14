@@ -1,6 +1,6 @@
 # Set up asdf action
 
-Set up asdf and install tools based on .tool-version file.
+Set up asdf and install tools based on .tool-versions file.
 
 ## Get start
 

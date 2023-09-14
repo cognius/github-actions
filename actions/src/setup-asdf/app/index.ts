@@ -120,7 +120,7 @@ const installTool = async ({
   }
 
   const installedPlugins = await pluginList()
-  const toolVersions = await readFile(join(workDir, ".tool-version"), {
+  const toolVersions = await readFile(join(workDir, ".tool-versions"), {
     encoding: "utf-8",
   })
   const pluginNames = toolVersions

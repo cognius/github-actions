@@ -1,5 +1,5 @@
 name: Set up asdf
-description: Set up asdf and install tools based on .tool-version file
+description: Set up asdf and install tools based on .tool-versions file
 author: Kamontat Chantrachirathumrong
 
 inputs:
@@ -10,7 +10,7 @@ inputs:
     description: all commands will run from this directory
     default: ${{ github.workspace }}
   tool_install:
-    description: install tool based from .tool-version file
+    description: install tool based from .tool-versions file
     default: "false"
 
 runs:
