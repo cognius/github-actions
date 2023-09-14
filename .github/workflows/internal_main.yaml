@@ -196,7 +196,7 @@ jobs:
       - uses: cognius/github-actions/.github/actions/setup-asdf@v2
         with:
           workdir: "${{ github.workspace }}/tests/asdf"
-          tool_install: false
+          tool_install: true
       - run: asdf --version
       - run: asdf install
         working-directory: "${{ github.workspace }}/tests/asdf"
