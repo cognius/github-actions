@@ -144,11 +144,11 @@ const installTool = async ({
     )
   }
 
-  // await execWithOptions(
-  //   {
-  //     cwd: workDir,
-  //   },
-  //   "asdf",
-  //   "install"
-  // )
+  await execWithOptions(
+    {
+      cwd: workDir,
+    },
+    "asdf",
+    "install"
+  )
 }
