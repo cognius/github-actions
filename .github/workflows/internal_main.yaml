@@ -200,5 +200,5 @@ jobs:
       - run: asdf --version
       - run: k6 version
         working-directory: "${{ github.workspace }}/tests/asdf"
-      - run: helm --version
+      - run: helm version
         working-directory: "${{ github.workspace }}/tests/asdf"
