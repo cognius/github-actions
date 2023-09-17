@@ -1,22 +1,54 @@
-import { Actions, type Runner, type BaseConfig } from "."
+import { setFailed } from "@actions/core"
 
-interface Config extends BaseConfig {
-  hello: string
-}
+import { Actions } from "."
 
-// TODO: This is only example code, we didn't implement tests yet.
-describe("Actions", () => {
-  const defaultConfig: Config = {
-    name: "default",
-    hello: "world",
-  }
+jest.mock("@actions/core")
 
-  const run: Runner<Config> = async (config) => {}
+describe("actions builder", () => {
+  const mockFn = jest.fn<string, []>()
+  const app = Actions.builder(() => {
+    return { name: "example", mock: mockFn() }
+  })
 
-  const actions = Actions.builder(defaultConfig)
+  test("created defined application", () => {
+    expect(app).toBeDefined()
+  })
 
-  test("create", async () => {
-    await actions.exec(run)
-    expect(true).toBe(true)
+  test("executes with reject Promise", async () => {
+    mockFn.mockReturnValueOnce("hello world")
+
+    const error = new Error("hello world")
+    const fn = jest.fn().mockRejectedValue(error)
+    await app.exec(fn)
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(setFailed).toHaveBeenCalledTimes(1)
+    expect(setFailed).toHaveBeenCalledWith(error)
+  })
+
+  test("executes with default config", async () => {
+    mockFn.mockReturnValueOnce("hello world")
+
+    const fn = jest.fn()
+    await app.exec(fn)
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn).toHaveBeenCalledWith({
+      name: "example",
+      mock: "hello world",
+    })
+  })
+
+  test("executes with custom config", async () => {
+    mockFn.mockReturnValueOnce("hello world")
+
+    const fn = jest.fn()
+    await app.exec(fn, { name: "override", mock: "new world" })
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn).toHaveBeenCalledWith({
+      name: "override",
+      mock: "new world",
+    })
   })
 })

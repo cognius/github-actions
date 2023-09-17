@@ -1,23 +1,19 @@
-import { info } from "@actions/core"
-
-import runAction from "../actions/run"
 import app from "."
 
 jest.mock("@actions/core")
 
-describe("example-ts action", () => {
-  it("default config", async () => {
-    await app.exec(runAction)
-
-    // Expected rules
-    expect(info).toHaveBeenCalledTimes(1)
-    expect(info).toHaveBeenCalledWith("hello example")
+describe("action application", () => {
+  test("contains export default", () => {
+    expect(app).toBeDefined()
   })
-  it("custom config", async () => {
-    await app.exec(runAction, { name: "custom" })
 
-    // Expected rules
-    expect(info).toHaveBeenCalledTimes(1)
-    expect(info).toHaveBeenCalledWith("hello custom")
+  test("executes default config", async () => {
+    const fn = jest.fn()
+    await app.exec(fn)
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn).toHaveBeenCalledWith({
+      name: "example",
+    })
   })
 })

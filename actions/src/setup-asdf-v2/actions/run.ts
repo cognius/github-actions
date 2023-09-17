@@ -3,7 +3,7 @@ import type { ExecOptions } from "@actions/exec"
 import type { Config } from "../app/types"
 
 import { existsSync } from "node:fs"
-import { addPath, debug, exportVariable, info } from "@actions/core"
+import { addPath, exportVariable, info } from "@actions/core"
 import { which } from "@actions/io"
 import { execWithOptions, exec } from "@utils/executors"
 import {
@@ -13,20 +13,18 @@ import {
   asdfToolInstall,
 } from "../apis/asdf"
 
-export const skippedSetup =
-  "Found asdf command on current environment, skipped setup"
-
 const action: Runner<Config> = async (config) => {
   const path = await which("asdf", false)
-  if ((path?.length ?? 0) > 0) {
-    debug(skippedSetup)
-    return
-  }
 
   await asdfSetup(config)
-  await asdfInstall(config)
-  await asdfAddPlugins(config)
-  await asdfInstallTools(config)
+  if (path === undefined || path === null || path === "") {
+    await asdfInstall(config)
+  }
+
+  if (config.tool) {
+    await asdfAddPlugins(config)
+    await asdfInstallTools(config)
+  }
 }
 
 const asdfSetup: Runner<Config> = async ({ asdfDir }) => {
@@ -58,7 +56,7 @@ const asdfInstall: Runner<Config> = async ({ asdfDir, ref }) => {
   }
 }
 
-const asdfAddPlugins: Runner<Config> = async ({ workDir }) => {
+const asdfAddPlugins: Runner<Config> = async ({ workDir, tool }) => {
   const installed = await asdfPluginList()
   const toolVersion = await asdfToolList(workDir)
   await Promise.all(
@@ -70,7 +68,7 @@ const asdfAddPlugins: Runner<Config> = async ({ workDir }) => {
   )
 }
 
-const asdfInstallTools: Runner<Config> = async ({ workDir }) => {
+const asdfInstallTools: Runner<Config> = async ({ workDir, tool }) => {
   await asdfToolInstall(workDir)
 }
 
