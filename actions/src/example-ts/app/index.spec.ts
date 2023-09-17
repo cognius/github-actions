@@ -1,13 +1,23 @@
-// import { getInput, setOutput, setFailed, debug } from "@actions/core"
-import { run } from "."
+import { info } from "@actions/core"
+
+import runAction from "../actions/run"
+import app from "."
 
 jest.mock("@actions/core")
 
 describe("example-ts action", () => {
-  it("default tests", async () => {
-    await run()
+  it("default config", async () => {
+    await app.exec(runAction)
 
     // Expected rules
-    expect(true).toBe(true)
+    expect(info).toHaveBeenCalledTimes(1)
+    expect(info).toHaveBeenCalledWith("hello example")
+  })
+  it("custom config", async () => {
+    await app.exec(runAction, { name: "custom" })
+
+    // Expected rules
+    expect(info).toHaveBeenCalledTimes(1)
+    expect(info).toHaveBeenCalledWith("hello custom")
   })
 })

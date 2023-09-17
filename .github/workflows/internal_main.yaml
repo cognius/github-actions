@@ -193,7 +193,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cognius/github-actions/.github/actions/setup-asdf@v2
+      - uses: cognius/github-actions/.github/actions/setup-asdf-v2@v2
         with:
           workdir: "${{ github.workspace }}/tests/asdf"
           tool_install: true

@@ -115,6 +115,7 @@ const relative = (...paths: string[]): string => {
 }
 
 const builder = Config.builder({
+  // mode: "development",
   target: "node",
   output: {
     path: relative("..", ".github", "actions"),
@@ -142,4 +143,5 @@ const builder = Config.builder({
 export default builder
   .use("module", "example-ts")
   .use("module", "setup-asdf")
+  .use("module", "setup-asdf-v2")
   .build()

@@ -1,6 +1,7 @@
 import { isFeatureAvailable, restoreCache, saveCache } from "@actions/cache"
 
 import { uploadCache, downloadCache, CacheKey } from "."
+import * as utils from "./utils"
 
 import { mock } from "@utils/tests/mocks"
 
@@ -8,6 +9,32 @@ jest.mock("@actions/core")
 jest.mock("@actions/cache")
 
 describe("cache utils", () => {
+  describe("CacheKey class", () => {
+    test("single key", async () => {
+      const key = CacheKey.builder("key")
+
+      expect(key.getKey()).toBe("key")
+      expect(key.getRestoreKeys()).toEqual([])
+    })
+    test("multiple keys", async () => {
+      const key = CacheKey.builder("key").add("hello").add("value")
+
+      expect(key.getKey()).toBe("key-hello-value")
+      expect(key.getRestoreKeys()).toEqual(["key-hello-", "key-"])
+    })
+    test("system key", async () => {
+      jest.spyOn(utils, "getPlatform")
+      jest.spyOn(utils, "getArch")
+
+      const key = CacheKey.builder("key").addSystem()
+
+      expect(key.getKey()).toMatch(/key-[^-]+-[^-]+/)
+
+      expect(utils.getPlatform).toHaveBeenCalledTimes(1)
+      expect(utils.getArch).toHaveBeenCalledTimes(1)
+    })
+  })
+
   test("save cache when feature enabled", async () => {
     mock(isFeatureAvailable).mockReturnValueOnce(true)
     mock(saveCache).mockResolvedValueOnce(1)
