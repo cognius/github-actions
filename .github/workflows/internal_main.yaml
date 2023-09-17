@@ -6,159 +6,6 @@ on:
 jobs:
   example-workflow:
     uses: cognius/github-actions/.github/workflows/example.yaml@v2
-  helm-install-action:
-    runs-on: ubuntu-latest
-    env:
-      DRYRUN: true
-      APP_ENV: dev
-      AWS_REGION: us-east-1
-      AWS_EKS_CLUSTER_NAME: sumato-2
-      ROOT_PATH: "${{ github.workspace }}/tests/helm-install"
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - uses: cognius/github-actions/.github/actions/helm-install@v2
-        env:
-          APP_NAME: test
-          AWS_ACCOUNT_ID: 111222333444
-      - uses: cognius/github-actions/.github/actions/helm-install@v2
-        env:
-          APP_NAME: test
-          HELM_DEBUG: true
-          HELM_CHART_VERSION: 0.1.1
-          AWS_ACCOUNT_ID: 111222333444
-      - uses: cognius/github-actions/.github/actions/helm-install@v2
-        env:
-          APP_NAME: test
-          HELM_RECREATE: true
-          AWS_ACCOUNT_ID: 111222333444
-      - uses: cognius/github-actions/.github/actions/helm-install@v2
-        env:
-          APP_NAME: test
-          AWS_ECR_REGISTRY: example.com
-  helm-push-action:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: cognius/github-actions/.github/actions/helm-push@v2
-        env:
-          DRYRUN: true
-          AWS_ACCOUNT_ID: 111222333444
-          AWS_REGION: us-east-1
-      - uses: cognius/github-actions/.github/actions/helm-push@v2
-        env:
-          DRYRUN: true
-          AWS_REGION: us-east-1
-          AWS_ECR_REGISTRY: example.com
-      - uses: cognius/github-actions/.github/actions/helm-push@v2
-        env:
-          DRYRUN: true
-          AWS_ACCOUNT_ID: 111222333444
-          AWS_REGION: us-east-1
-          REPOSITORIES: |
-            kafka-ui=https://provectus.github.io/kafka-ui
-            prometheus-community=https://prometheus-community.github.io/helm-charts
-  host-aliases-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cognius/github-actions/.github/actions/host-aliases@v2
-        env:
-          HOSTS: example.com
-      - run: docker run --name nginx --rm --publish 9999:80 --detach nginx:stable
-      - run: curl -I "example.com:9999"
-      - run: docker stop nginx
-  pr-comment-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cognius/github-actions/.github/actions/pr-comment@v2
-        env:
-          DRYRUN: true
-          COMMENT_MESSAGE: |
-            hello world
-            multiple line
-  release-create-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: cognius/github-actions/.github/actions/release-create@v2
-        env:
-          DRYRUN: true
-          APP_VERSION: v1.0.0
-  release-info-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - id: info
-        uses: cognius/github-actions/.github/actions/release-info@v2
-      - id: info-2
-        uses: cognius/github-actions/.github/actions/release-info@v2
-        env:
-          APP_ENV: production
-          APP_NAME: test
-          APP_PATHS: test=
-          DOCKER_CONTEXT_PATHS: test=
-          DOCKER_FILE_PATHS: test=
-      - run: test -n "${{ steps.info.outputs.mode }}"
-      - run: test -z "${{ steps.info.outputs.environment }}"
-      - run: test -n "${{ steps.info.outputs.app-version }}"
-      - run: test -n "${{ steps.info-2.outputs.app-name }}"
-      - run: test -n "${{ steps.info-2.outputs.environment }}"
-  release-notify-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cognius/github-actions/.github/actions/release-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: start
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-      - uses: cognius/github-actions/.github/actions/release-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: success
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-      - uses: cognius/github-actions/.github/actions/release-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: failure
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-      - uses: cognius/github-actions/.github/actions/release-notify@v2
-        env:
-          DRYRUN: true
-          NOTIFY_TYPE: cancelled
-          APP_NAME: test
-          SLACK_WEBHOOK: https://google.com
-  server-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cognius/github-actions/.github/actions/server@v2
-        env:
-          DRYRUN: true
-          SERVER_TARGET: 127.0.0.1
-          SERVER_USERNAME: user
-          SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
-          SERVER_PUBLIC_FINGERPRINT: ssh-ed25519 AAAAC3N
-          SERVER_CONNECT_SCRIPT: pwd
-      - uses: actions/checkout@v3
-      - uses: cognius/github-actions/.github/actions/server@v2
-        env:
-          DRYRUN: true
-          SERVER_ACTION: copy
-          SERVER_TARGET: 127.0.0.1
-          SERVER_USERNAME: user
-          SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
-          SERVER_PUBLIC_FINGERPRINT: ssh-ed25519 AAAAC3N
-          SERVER_COPY_BASE: "${{ github.workspace }}/tests/server"
-          SERVER_COPY_DEST: server-tests
   actions:
     runs-on: ubuntu-latest
     steps:
@@ -166,39 +13,55 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          package_json_file: actions/package.json
+          package_json_file: .actions/package.json
       - name: Set up nodejs
         uses: actions/setup-node@v3
         with:
           cache: pnpm
-          node-version-file: actions/package.json
-          cache-dependency-path: actions/pnpm-lock.yaml
+          node-version-file: .actions/package.json
+          cache-dependency-path: .actions/pnpm-lock.yaml
       - name: Install actions dependencies
-        working-directory: actions
+        working-directory: .actions
         run: pnpm install
       - name: Lint actions
-        working-directory: actions
+        working-directory: .actions
         run: pnpm lint
       - name: Test actions
-        working-directory: actions
+        working-directory: .actions
         run: pnpm test
       - name: Build actions
-        working-directory: actions
+        working-directory: .actions
         run: pnpm build
   example-action:
     runs-on: ubuntu-latest
+    needs:
+      - actions
     steps:
-      - uses: cognius/github-actions/.github/actions/example-ts@v2
+      - uses: cognius/github-actions/example-ts@v2
   setup-asdf-action:
     runs-on: ubuntu-latest
+    needs:
+      - actions
     steps:
       - uses: actions/checkout@v3
-      - uses: cognius/github-actions/.github/actions/setup-asdf-v2@v2
+      - uses: cognius/github-actions/setup-asdf@v2
         with:
-          workdir: "${{ github.workspace }}/tests/asdf"
-          tool_install: true
+          tool-install: true
+          workdir: "${{ github.workspace }}/.tests/asdf"
       - run: asdf --version
       - run: k6 version
-        working-directory: "${{ github.workspace }}/tests/asdf"
+        working-directory: "${{ github.workspace }}/.tests/asdf"
       - run: helm version
-        working-directory: "${{ github.workspace }}/tests/asdf"
+        working-directory: "${{ github.workspace }}/.tests/asdf"
+  create-hosts-action:
+    runs-on: ubuntu-latest
+    needs:
+      - actions
+    steps:
+      - uses: cognius/github-actions/create-hosts@v2
+        with:
+          hosts: example.com,hello-world.com
+      - run: docker run --name nginx --rm --publish 9999:80 --detach nginx:stable
+      - run: curl -I "example.com:9999"
+      - run: curl -I "hello-world.com:9999"
+      - run: docker stop nginx

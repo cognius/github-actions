@@ -2,11 +2,11 @@
   "folders": [
     {
       "name": "actions",
-      "path": "actions"
+      "path": ".actions"
     },
     {
-      "name": "github/actions",
-      "path": ".github/actions"
+      "name": "tests",
+      "path": ".tests"
     },
     {
       "name": "github/workflows",
@@ -19,7 +19,7 @@
   ],
   "settings": {
     "yaml.schemas": {
-      "https://json.schemastore.org/github-action.json": ".github/actions/**/*.yaml",
+      "https://json.schemastore.org/github-action.json": ".actions/**/*.yaml",
       "https://json.schemastore.org/github-workflow.json": ".github/workflows/**/*.yaml"
     }
   }

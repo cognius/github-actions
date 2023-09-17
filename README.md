@@ -26,9 +26,9 @@ jobs:
       ## <action-name> is a directory name inside /actions directory
       ## <branch-name> should default to 'v2' except if you would like to test your working actions
       ## ref: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-public-action-in-a-subdirectory
-      - uses: cognius/github-actions/.github/actions/<action-name>@<branch-name>
+      - uses: cognius/github-actions/<action-name>@<branch-name>
       ## example
-      # - uses: cognius/github-actions/.github/actions/example@v2
+      # - uses: cognius/github-actions/example-ts@v2
 ```
 
 #### Actions notes

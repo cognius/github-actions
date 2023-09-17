@@ -1,1 +1,0 @@
-!function(){var t={9021:function(t,o,r){throw Error("Failed to resolve /Users/kamontat/Desktop/Work/github-actions/actions/src/example-ts/post.ts in project root")}},o={};!function r(e){var s=o[e];if(void 0!==s)return s.exports;var n=o[e]={exports:{}};return t[e](n,n.exports,r),n.exports}("9021")}();
