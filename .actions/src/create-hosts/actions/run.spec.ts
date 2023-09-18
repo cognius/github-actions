@@ -1,5 +1,5 @@
-// import fsPromise from "node:fs/promises"
 import { getInput, setFailed } from "@actions/core"
+import { exec } from "@actions/exec"
 import { mock } from "@utils/tests/mocks"
 
 import app from "../app"
@@ -11,23 +11,19 @@ jest.mock("@actions/exec")
 describe("action runner", () => {
   test("write table to hosts file", async () => {
     mock(getInput).mockReturnValue("")
-    // const appendFile = jest
-    //   .spyOn(fsPromise, "appendFile")
-    //   .mockResolvedValue(undefined)
 
     await app.exec(run, { hosts: ["a.com", "b.com"], ip: "127.0.0.1" })
 
     expect(setFailed).not.toHaveBeenCalled()
-    //     expect(appendFile).toHaveBeenCalledTimes(1)
-    //     expect(appendFile).toHaveBeenCalledWith(
-    //       "/etc/hosts",
-    //       `
-    // 127.0.0.1   a.com
-    // 127.0.0.1   b.com`,
-    //       {
-    //         encoding: "utf8",
-    //       }
-    //     )
+    expect(exec).toHaveBeenCalledTimes(1)
+    expect(exec).toHaveBeenCalledWith("sudo", ["tee", "-a", "/etc/hosts"], {
+      input: Buffer.from(
+        `
+127.0.0.1   a.com
+127.0.0.1   b.com`,
+        "utf8"
+      ),
+    })
   })
 
   afterEach(() => {
