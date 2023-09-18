@@ -18,3 +18,4 @@ runs:
   pre: pre.js
   main: index.js
   post: post.js
+  post-if: success()

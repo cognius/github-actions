@@ -13,7 +13,7 @@ jobs:
       APP_ENV: dev
       AWS_REGION: us-east-1
       AWS_EKS_CLUSTER_NAME: sumato-2
-      ROOT_PATH: "${{ github.workspace }}/tests/helm-install"
+      ROOT_PATH: "${{ github.workspace }}/.tests/helm-install"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -157,5 +157,5 @@ jobs:
           SERVER_USERNAME: user
           SERVER_PRIVATE_KEY_BASE64: cHJpdmF0ZS1rZXkK
           SERVER_PUBLIC_FINGERPRINT: ssh-ed25519 AAAAC3N
-          SERVER_COPY_BASE: "${{ github.workspace }}/tests/server"
+          SERVER_COPY_BASE: "${{ github.workspace }}/.tests/server"
           SERVER_COPY_DEST: server-tests
