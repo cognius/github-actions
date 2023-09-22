@@ -1,8 +1,6 @@
-import type { BaseConfig } from "@utils/actions"
-
 import type { CacheKey } from "@utils/caches"
 
-export interface Config extends BaseConfig {
+export interface Input {
   cache: CacheKey
   ref: string
   workDir: string

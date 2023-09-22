@@ -1,7 +1,7 @@
 import { join } from "node:path"
 import { getInput } from "@actions/core"
 
-import app from "."
+import app, { context } from "."
 
 import * as utils from "@utils/caches/utils"
 import { mock } from "@utils/tests/mocks"
@@ -25,13 +25,15 @@ describe("action application", () => {
     await app.exec(fn)
 
     expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn).toHaveBeenCalledWith({
-      asdfDir: join(process.env.HOME ?? "/", ".asdf"),
-      cache: CacheKey.builder("asdf").addSystem().add("master"),
-      name: "asdf",
-      ref: "master",
-      tool: false,
-      workDir: "",
-    })
+    expect(fn).toHaveBeenCalledWith(
+      {
+        asdfDir: join(process.env.HOME ?? "/", ".asdf"),
+        cache: CacheKey.builder(context.name).addSystem().add("master"),
+        ref: "master",
+        tool: false,
+        workDir: "",
+      },
+      context
+    )
   })
 })

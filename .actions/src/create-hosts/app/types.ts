@@ -1,6 +1,4 @@
-import type { BaseConfig } from "@utils/actions"
-
-export interface Config extends BaseConfig {
+export interface Input {
   tableFile: string
   hosts: string[]
   ip: string

@@ -16,7 +16,7 @@ class CacheKey {
   }
 
   add(key: string): this {
-    this.keys.push(key)
+    if (typeof key === "string" && key.length > 0) this.keys.push(key)
     return this
   }
 

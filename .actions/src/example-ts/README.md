@@ -44,3 +44,7 @@ A environment parsed to action using `env` field in **steps** objects.
 ### Dryrun mode
 
 `DRYRUN` will enabled dry-run mode instead of running actual code.
+
+## Source code
+
+[here](https://github.com/cognius/github-actions/tree/v2/.actions/src/example-ts)

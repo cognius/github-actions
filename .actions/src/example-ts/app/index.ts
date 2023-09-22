@@ -1,7 +1,6 @@
-import type { Config } from "./types"
+import type { Input } from "./types"
 
-import { Actions } from "@utils/actions"
+import { Actions, DefaultContext } from "@utils/actions"
 
-export default Actions.builder<Config>(() => {
-  return { name: "example" }
-})
+export const context = new DefaultContext("example-ts", "v0.1.0-dev")
+export default Actions.builder<Input>(context, () => ({ name: "example" }))

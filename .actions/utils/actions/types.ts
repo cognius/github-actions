@@ -1,7 +1,15 @@
-export interface BaseConfig {
-  name: string
+import type { DefaultContext } from "./context"
+
+export interface BaseContext {
+  readonly name: string
+  readonly version: string
 }
 
-export type RunnerEvent = "pre" | "run" | "post"
+export type Builder<T, Context extends BaseContext = DefaultContext> = (
+  context: Context
+) => T
 
-export type Runner<C extends BaseConfig> = (config: C) => Promise<void>
+export type Runner<Input, Context extends BaseContext = DefaultContext> = (
+  input: Input,
+  context: Context
+) => Promise<void>

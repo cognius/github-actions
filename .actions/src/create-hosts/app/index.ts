@@ -1,7 +1,7 @@
-import type { Config } from "./types"
+import type { Input } from "./types"
 
 import { getInput } from "@actions/core"
-import { Actions } from "@utils/actions"
+import { Actions, DefaultContext } from "@utils/actions"
 
 const toHosts = (host: string): string[] => {
   return host
@@ -10,9 +10,9 @@ const toHosts = (host: string): string[] => {
     .filter((h) => h !== "")
 }
 
-export default Actions.builder<Config>(() => {
+export const context = new DefaultContext("create-hosts", "v0.1.0-dev")
+export default Actions.builder<Input>(context, () => {
   return {
-    name: "create-hosts",
     hosts: toHosts(getInput("hosts", { required: true })),
     ip: getInput("ip", { required: true }),
     tableFile: "/etc/hosts",

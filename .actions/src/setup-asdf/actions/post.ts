@@ -1,9 +1,9 @@
 import type { Runner } from "@utils/actions"
-import type { Config } from "../app/types"
+import type { Input } from "../app/types"
 
 import { uploadCache } from "@utils/caches"
 
-const action: Runner<Config> = async ({ cache, asdfDir }) => {
+const action: Runner<Input> = async ({ cache, asdfDir }) => {
   await uploadCache(cache, asdfDir)
 }
 

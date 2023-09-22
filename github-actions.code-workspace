@@ -5,6 +5,10 @@
       "path": ".actions"
     },
     {
+      "name": "actions-legacy",
+      "path": ".github/actions"
+    },
+    {
       "name": "tests",
       "path": ".tests"
     },

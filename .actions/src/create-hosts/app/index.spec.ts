@@ -1,7 +1,7 @@
 import { getInput, setFailed } from "@actions/core"
 import { mock } from "@utils/tests/mocks"
 
-import app from "."
+import app, { context } from "."
 
 jest.mock("@actions/core")
 
@@ -18,11 +18,13 @@ describe("action application", () => {
 
     expect(setFailed).not.toHaveBeenCalled()
     expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn).toHaveBeenCalledWith({
-      name: "create-hosts",
-      hosts: [],
-      ip: "",
-      tableFile: "/etc/hosts",
-    })
+    expect(fn).toHaveBeenCalledWith(
+      {
+        hosts: [],
+        ip: "",
+        tableFile: "/etc/hosts",
+      },
+      context
+    )
   })
 })

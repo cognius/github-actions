@@ -1,9 +1,9 @@
 import type { Runner } from "@utils/actions"
-import type { Config } from "../app/types"
+import type { Input } from "../app/types"
 
 import { execWithOptions } from "@utils/executors"
 
-const action: Runner<Config> = async ({ ip, hosts, tableFile }) => {
+const action: Runner<Input> = async ({ ip, hosts, tableFile }) => {
   const lookupTable = hosts.reduce((table, host) => {
     const row = `${ip}   ${host}`
     return table + "\n" + row

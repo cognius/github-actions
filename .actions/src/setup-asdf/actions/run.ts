@@ -1,6 +1,6 @@
-import type { Runner } from "@utils/actions"
 import type { ExecOptions } from "@actions/exec"
-import type { Config } from "../app/types"
+import type { Runner } from "@utils/actions"
+import type { Input } from "../app/types"
 
 import { existsSync } from "node:fs"
 import { addPath, exportVariable, info } from "@actions/core"
@@ -13,27 +13,27 @@ import {
   asdfToolInstall,
 } from "../apis/asdf"
 
-const action: Runner<Config> = async (config) => {
+const action: Runner<Input> = async (config, context) => {
   const path = await which("asdf", false)
 
-  await asdfSetup(config)
+  await asdfSetup(config, context)
   if (path === undefined || path === null || path === "") {
-    await asdfInstall(config)
+    await asdfInstall(config, context)
   }
 
   if (config.tool) {
-    await asdfAddPlugins(config)
-    await asdfInstallTools(config)
+    await asdfAddPlugins(config, context)
+    await asdfInstallTools(config, context)
   }
 }
 
-const asdfSetup: Runner<Config> = async ({ asdfDir }) => {
+const asdfSetup: Runner<Input> = async ({ asdfDir }) => {
   exportVariable("ASDF_DIR", asdfDir)
   addPath(`${asdfDir}/bin`)
   addPath(`${asdfDir}/shims`)
 }
 
-const asdfInstall: Runner<Config> = async ({ asdfDir, ref }) => {
+const asdfInstall: Runner<Input> = async ({ asdfDir, ref }) => {
   if (existsSync(asdfDir)) {
     info(`Updating asdf in ASDF_DIR "${asdfDir}" on "${ref}"`)
     const o: ExecOptions = { cwd: asdfDir }
@@ -56,7 +56,7 @@ const asdfInstall: Runner<Config> = async ({ asdfDir, ref }) => {
   }
 }
 
-const asdfAddPlugins: Runner<Config> = async ({ workDir, tool }) => {
+const asdfAddPlugins: Runner<Input> = async ({ workDir, tool }) => {
   const installed = await asdfPluginList()
   const toolVersion = await asdfToolList(workDir)
   await Promise.all(
@@ -68,7 +68,7 @@ const asdfAddPlugins: Runner<Config> = async ({ workDir, tool }) => {
   )
 }
 
-const asdfInstallTools: Runner<Config> = async ({ workDir, tool }) => {
+const asdfInstallTools: Runner<Input> = async ({ workDir, tool }) => {
   await asdfToolInstall(workDir)
 }
 

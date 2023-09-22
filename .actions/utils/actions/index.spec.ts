@@ -1,54 +1,33 @@
 import { setFailed } from "@actions/core"
-
 import { Actions } from "."
+import { DefaultContext } from "./context"
 
 jest.mock("@actions/core")
 
 describe("actions builder", () => {
-  const mockFn = jest.fn<string, []>()
-  const app = Actions.builder(() => {
-    return { name: "example", mock: mockFn() }
-  })
+  const defaultData = { msg: "hello world" }
+  const defaultBuilder = (): Record<string, string> => defaultData
+  const defaultContext = new DefaultContext("test", "v1.0.0")
 
-  test("created defined application", () => {
-    expect(app).toBeDefined()
-  })
+  test("execute resolve promise", async () => {
+    const fn = jest.fn().mockResolvedValueOnce("hello")
+    const app = Actions.builder(defaultContext, defaultBuilder)
 
-  test("executes with reject Promise", async () => {
-    mockFn.mockReturnValueOnce("hello world")
-
-    const error = new Error("hello world")
-    const fn = jest.fn().mockRejectedValue(error)
     await app.exec(fn)
 
     expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn).toHaveBeenCalledWith(defaultData, defaultContext)
+    expect(setFailed).not.toHaveBeenCalled()
+  })
+
+  test("execute reject promise", async () => {
+    const error = new Error("unknown error")
+    const fn = jest.fn().mockRejectedValueOnce(error)
+    const app = Actions.builder(defaultContext, defaultBuilder)
+
+    await app.exec(fn)
+
     expect(setFailed).toHaveBeenCalledTimes(1)
     expect(setFailed).toHaveBeenCalledWith(error)
-  })
-
-  test("executes with default config", async () => {
-    mockFn.mockReturnValueOnce("hello world")
-
-    const fn = jest.fn()
-    await app.exec(fn)
-
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn).toHaveBeenCalledWith({
-      name: "example",
-      mock: "hello world",
-    })
-  })
-
-  test("executes with custom config", async () => {
-    mockFn.mockReturnValueOnce("hello world")
-
-    const fn = jest.fn()
-    await app.exec(fn, { name: "override", mock: "new world" })
-
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn).toHaveBeenCalledWith({
-      name: "override",
-      mock: "new world",
-    })
   })
 })
