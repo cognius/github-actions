@@ -15,6 +15,8 @@ jobs:
             # ref: v0.13.1
             # tool-install: false
             # workdir: /
+            # cache-disabled: false
+            # cache-key: v1
         env:
             # DRYRUN: true
 ```
@@ -37,6 +39,15 @@ on .tool-versions file (default is **false**).
 `workdir` is a current working directory,
 this also use to resolve .tool-versions file when
 you enabled [tool-install](#tool-install-mode) mode (default is **$PWD**).
+
+### Cache disabled
+
+`cache-disabled` is a boolean flag to disabled caching on GitHub Action
+(default is **false**).
+
+### Cache key
+
+`cache-key` is a optional key for resolving cache in Github Action.
 
 ## Environments
 

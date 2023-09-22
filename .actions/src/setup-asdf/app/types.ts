@@ -1,7 +1,10 @@
 import type { CacheKey } from "@utils/caches"
 
 export interface Input {
-  cache: CacheKey
+  cache: {
+    disable: boolean
+    key: CacheKey
+  }
   ref: string
   workDir: string
   asdfDir: string

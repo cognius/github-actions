@@ -56,7 +56,7 @@ const asdfInstall: Runner<Input> = async ({ asdfDir, ref }) => {
   }
 }
 
-const asdfAddPlugins: Runner<Input> = async ({ workDir, tool }) => {
+const asdfAddPlugins: Runner<Input> = async ({ workDir }) => {
   const installed = await asdfPluginList()
   const toolVersion = await asdfToolList(workDir)
   await Promise.all(
@@ -68,7 +68,7 @@ const asdfAddPlugins: Runner<Input> = async ({ workDir, tool }) => {
   )
 }
 
-const asdfInstallTools: Runner<Input> = async ({ workDir, tool }) => {
+const asdfInstallTools: Runner<Input> = async ({ workDir }) => {
   await asdfToolInstall(workDir)
 }
 

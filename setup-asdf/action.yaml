@@ -12,7 +12,12 @@ inputs:
   tool-install:
     description: install tool based from .tool-versions file
     default: "false"
-
+  cache-disabled:
+    description: for disable both asdf and tools cache (if applied)
+    default: "false"
+  cache-key:
+    description: cache key for invalidate cache
+    default: ""
 runs:
   using: node20
   pre: pre.js

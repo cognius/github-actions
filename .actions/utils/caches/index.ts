@@ -1,6 +1,8 @@
 import { isFeatureAvailable, restoreCache, saveCache } from "@actions/cache"
 import { getArch, getPlatform } from "./utils"
 
+type Key = string | undefined | null
+
 class CacheKey {
   static builder(key: string): CacheKey {
     return new CacheKey(key)
@@ -12,11 +14,13 @@ class CacheKey {
   }
 
   addSystem(): this {
-    return this.add(getPlatform()).add(getArch())
+    return this.add(getPlatform(), getArch())
   }
 
-  add(key: string): this {
-    if (typeof key === "string" && key.length > 0) this.keys.push(key)
+  add(...keys: Key[]): this {
+    this.keys.push(
+      ...(keys.filter((k) => typeof k === "string" && k.length > 0) as string[])
+    )
     return this
   }
 

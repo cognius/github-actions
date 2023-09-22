@@ -28,7 +28,10 @@ describe("action application", () => {
     expect(fn).toHaveBeenCalledWith(
       {
         asdfDir: join(process.env.HOME ?? "/", ".asdf"),
-        cache: CacheKey.builder(context.name).addSystem().add("master"),
+        cache: {
+          disabled: false,
+          key: CacheKey.builder(context.name).addSystem().add("master"),
+        },
         ref: "master",
         tool: false,
         workDir: "",
