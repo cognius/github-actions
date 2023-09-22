@@ -14,12 +14,28 @@ describe("action pre script", () => {
     mock(isFeatureAvailable).mockReturnValue(true)
 
     await app.exec(pre, {
-      cache: CacheKey.builder("asdf"),
+      cache: {
+        disabled: false,
+        key: CacheKey.builder("asdf"),
+      },
       asdfDir: "/home/user",
     })
 
     expect(setFailed).not.toHaveBeenCalled()
     expect(restoreCache).toHaveBeenCalledTimes(1)
     expect(restoreCache).toHaveBeenCalledWith(["/home/user"], "asdf", [])
+  })
+
+  it("disable caching", async () => {
+    await app.exec(pre, {
+      cache: {
+        disabled: true,
+        key: CacheKey.builder("asdf"),
+      },
+      asdfDir: "/home/user",
+    })
+
+    expect(setFailed).not.toHaveBeenCalled()
+    expect(restoreCache).not.toHaveBeenCalled()
   })
 })

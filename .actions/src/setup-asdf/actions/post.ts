@@ -4,7 +4,7 @@ import type { Input } from "../app/types"
 import { uploadCache } from "@utils/caches"
 
 const action: Runner<Input> = async ({ cache, asdfDir }) => {
-  if (cache.disable) return
+  if (cache.disabled) return
   await uploadCache(cache.key, asdfDir)
 }
 

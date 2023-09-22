@@ -2,7 +2,7 @@ import type { CacheKey } from "@utils/caches"
 
 export interface Input {
   cache: {
-    disable: boolean
+    disabled: boolean
     key: CacheKey
   }
   ref: string

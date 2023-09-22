@@ -30,7 +30,10 @@ describe("action application", () => {
         asdfDir: join(process.env.HOME ?? "/", ".asdf"),
         cache: {
           disabled: false,
-          key: CacheKey.builder(context.name).addSystem().add("master"),
+          key: CacheKey.builder(context.name)
+            .add("v0.1.0-dev")
+            .addSystem()
+            .add("master"),
         },
         ref: "master",
         tool: false,

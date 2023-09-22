@@ -13,7 +13,7 @@ export default Actions.builder<Input>(context, (ctx) => {
   const key = getInput("cache-key", { required: false })
   return {
     cache: {
-      disable: getInput("cache-disabled") === "true",
+      disabled: getInput("cache-disabled") === "true",
       key: CacheKey.builder(ctx.name)
         .add(ctx.version)
         .addSystem()
