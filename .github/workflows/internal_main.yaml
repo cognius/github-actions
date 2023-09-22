@@ -46,6 +46,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: cognius/github-actions/setup-asdf@v2
         with:
+          cache-disabled: true
           tool-install: true
           workdir: "${{ github.workspace }}/.tests/asdf"
       - run: asdf --version
