@@ -1,0 +1,15 @@
+name: Typescript Example
+description: Example actions written on Typescript
+author: Kamontat Chantrachirathumrong
+
+# inputs:
+#   input:
+#     description: Input description
+
+# outputs:
+#   output:
+#     description: Output description
+
+runs:
+  using: node20
+  main: index.js

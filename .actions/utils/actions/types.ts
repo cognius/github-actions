@@ -1,15 +1,20 @@
 import type { DefaultContext } from "./context"
 
+export interface BaseData<Input> {
+  input: Input
+}
+
 export interface BaseContext {
   readonly name: string
   readonly version: string
 }
 
-export type Builder<T, Context extends BaseContext = DefaultContext> = (
-  context: Context
-) => T
+export type InputBuilder<
+  Input,
+  Context extends BaseContext = DefaultContext,
+> = (context: Context) => Input
 
 export type Runner<Input, Context extends BaseContext = DefaultContext> = (
-  input: Input,
+  data: BaseData<Input>,
   context: Context
 ) => Promise<void>

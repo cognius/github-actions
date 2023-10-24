@@ -1,10 +1,10 @@
 import type { Runner } from "@utils/actions"
 import type { Input } from "../app/types"
 
-import { info } from "@actions/core"
+// import { info } from "@actions/core"
 
-const action: Runner<Input> = async (input) => {
-  info(`hello ${input.name}`)
+const action: Runner<Input> = async (data) => {
+  // info(`hello ${data.input.name}`)
 }
 
 export default action

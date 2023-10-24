@@ -1,4 +1,5 @@
-import { setFailed } from "@actions/core"
+import { setFailed, getInput } from "@actions/core"
+import { asMock, mockRunner } from "@utils/mocks"
 
 import app, { context } from "."
 
@@ -10,14 +11,18 @@ describe("action application", () => {
   })
 
   test("executes default config", async () => {
-    const fn = jest.fn()
+    asMock(getInput).mockReturnValue("example")
+
+    const fn = mockRunner(app)
     await app.exec(fn)
 
     expect(setFailed).not.toHaveBeenCalled()
     expect(fn).toHaveBeenCalledTimes(1)
     expect(fn).toHaveBeenCalledWith(
       {
-        name: "example",
+        input: {
+          name: "example",
+        },
       },
       context
     )

@@ -1,26 +1,20 @@
+import { type Converter, toString } from "@utils/datatypes"
+
 class NoSuchEnvironment extends Error {
   constructor(key: string) {
     super(`Environment $${key} is required, but not defined`)
   }
 }
 
-class InvalidEnvironmentType extends Error {
-  constructor(data: string, type: string) {
-    super(`Cannot convert ${data} to ${type}`)
-  }
-}
-
-export type Converter<T> = (value: string) => T
-
-const get = <T>(key: string, converter: Converter<T>, def?: T): T => {
+const get = <T>(key: string, converter: Converter<string, T>, def?: T): T => {
   const value = process.env[key]
-  if (typeof value === "string" && value !== "") return converter(value)
+  if (typeof value === "string" && value !== "") return converter.fn(value)
   if (def !== undefined && def !== null) return def
   throw new NoSuchEnvironment(key)
 }
 
 export const getEnvValue = (key: string, def?: string): string => {
-  return get(key, (v) => v, def)
+  return get(key, toString, def)
 }
 
 const toInt: Converter<number> = (v) => {

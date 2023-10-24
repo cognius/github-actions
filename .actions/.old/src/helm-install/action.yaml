@@ -1,0 +1,46 @@
+name: Install helm-chart
+description: Install helm-chart to AWS EKS cluster
+author: Kamontat Chantrachirathumrong
+
+inputs:
+  environment:
+    description: Deployment environment
+    required: true
+  app-name:
+    description: Application name
+    required: true
+  app-version:
+    description: Application version
+    required: false
+  aws-region:
+    description: AWS Region (default is $AWS_REGION)
+    required: false
+  aws-eks-name:
+    description: AWS EKS Name (default is $AWS_EKS_NAME)
+    required: false
+  aws-account-id:
+    description: AWS Account ID (default is $AWS_ACCOUNT_ID)
+    required: false
+  aws-ecr-registry:
+    description: AWS ECR Registry (default is $AWS_ECR_REGISTRY)
+    required: false
+  helm-timeout:
+    description: Helm install timeout
+    default: 5m
+  helm-debug:
+    description: Debugging Helm commands
+    default: "false"
+  helm-force:
+    description: Force install Helm
+    default: "false"
+  helm-recreate:
+    description: Force install Helm
+    default: "false"
+
+# outputs:
+#   output:
+#     description: Output description
+
+runs:
+  using: node20
+  main: index.js

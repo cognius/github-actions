@@ -1,27 +1,15 @@
-import { debug } from "@actions/core"
-import { DefaultContext } from "./context"
+import { DefaultContext } from "."
 
-jest.mock("@actions/core")
+describe("utils.actions.context", () => {
+  const context = new DefaultContext("example", "v1.0.0")
 
-describe("default context", () => {
-  test.each([
-    ["string", "string"],
-    [["a", "b"], "[a,b]"],
-    [{ a: "a", b: true }, '{"a":"a","b":true}'],
-    [undefined, "<undefined>"],
-    [null, "<null>"],
-    [123, "123"],
-    [0.333, "0.333"],
-    [true, "true"],
-    [false, "false"],
-    [console.log, "<Function log>"],
-    [Symbol.for("hello"), "Symbol(hello)"],
-  ])("context.debug('%p') should log '%p'", (input, output) => {
-    const context = new DefaultContext("asdf", "v1.0.0")
+  test("format with object data", () => {
+    expect(context.format("hello {name}", { name: "world" })).toEqual(
+      "hello world"
+    )
+  })
 
-    context.debug(input)
-
-    expect(debug).toHaveBeenCalledTimes(1)
-    expect(debug).toHaveBeenCalledWith(output)
+  test("format with array data", () => {
+    expect(context.format("hello {0}", "world")).toEqual("hello world")
   })
 })

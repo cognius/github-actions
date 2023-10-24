@@ -1,4 +1,5 @@
 import type { Configuration } from "@rspack/cli"
+import StatoscopePlugin from "@statoscope/webpack-plugin"
 
 import { existsSync } from "node:fs"
 import { resolve } from "node:path"
@@ -106,6 +107,7 @@ class Config<
   }
 
   build(): Conf {
+    // console.log(this.base.config)
     return this.base.config as Conf
   }
 }
@@ -127,6 +129,43 @@ const builder = Config.builder({
   resolve: {
     tsConfigPath: "tsconfig.json",
   },
+  // https://github.com/statoscope/statoscope/tree/master/packages/webpack-plugin#faq
+  stats: {
+    all: false, // disable all the stats
+    hash: true, // compilation hash
+    entrypoints: true, // entrypoints
+    chunks: true, // chunks
+    chunkModules: true, // modules
+    reasons: true, // modules reasons
+    ids: true, // IDs of modules and chunks (webpack 5)
+    dependentModules: true, // dependent modules of chunks (webpack 5)
+    chunkRelations: true, // chunk parents, children and siblings (webpack 5)
+    cachedAssets: true, // information about the cached assets (webpack 5)
+
+    nestedModules: true, // concatenated modules
+    usedExports: true, // used exports
+    providedExports: true, // provided imports
+    assets: true, // assets
+    chunkOrigins: true, // chunks origins stats (to find out which modules require a chunk)
+    version: true, // webpack version
+    builtAt: true, // build at time
+    timings: true, // modules timing information
+    performance: true, // info about oversized assets
+    logging: "none",
+  },
+  plugins: [
+    new StatoscopePlugin({
+      saveReportTo: "reports/[name].html",
+      saveStatsTo: "reports/[name].json",
+      normalizeStats: false,
+      saveOnlyStats: false,
+      disableReportCompression: false,
+      watchMode: false,
+      open: false,
+      name: "actions-stats",
+      compressor: "gzip",
+    }) as any,
+  ],
 }).define("module", (config, name: string) => {
   const basepath = relative("src", name)
   const preScript = resolve(basepath, "pre.ts")
@@ -141,7 +180,7 @@ const builder = Config.builder({
 })
 
 export default builder
-  .use("module", "create-hosts")
   .use("module", "example-ts")
-  .use("module", "setup-asdf")
+  // .use("module", "create-hosts")
+  // .use("module", "setup-asdf")
   .build()
