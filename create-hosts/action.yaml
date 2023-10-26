@@ -3,7 +3,7 @@ description: create hosts mapping to input ip
 author: Kamontat Chantrachirathumrong
 
 inputs:
-  hosts:
+  domains:
     description: list of host string separated by comma or new-line
     required: true
   ip:

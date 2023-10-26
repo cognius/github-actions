@@ -5,6 +5,9 @@ author: Kamontat Chantrachirathumrong
 inputs:
   name:
     description: example name
+  dryrun:
+    description: dry-run the command instead executes
+    required: false
 
 # outputs:
 #   output:

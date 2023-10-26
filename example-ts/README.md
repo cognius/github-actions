@@ -1,6 +1,6 @@
-# Typescript Example action
+# <name> action
 
-Example actions written on Typescript
+<!-- <description> -->
 
 ## Get start
 
@@ -11,7 +11,8 @@ Example actions written on Typescript
 - [ ] Update README title to `<name> action` where **<name>** is name field in **action.yaml**
 - [ ] Update README description to `<description>` where **<description>** is description field in **action.yaml**
 - [ ] Update README usage section uses action and add example inputs and/or env key
-- [ ] Remove default inputs and environment from README can add your settings
+- [ ] Update README configurations section from your settings
+- [ ] Update README source code section from example-ts to your action name
 - [ ] Add actions as module on rspack.config.ts file
 
 ## Usage
@@ -23,28 +24,41 @@ jobs:
     steps:
       - uses: cognius/github-actions/example-ts@v3
         with:
-            name: example
-        env:
-            EXAMPLE_TS__DRYRUN: true
+            # name: example
+            # dryrun: true
 ```
 
-## Inputs
+## Configurations
 
-A input values parsed to action using `with` field in **steps** objects.
+A parsed input send to actions. You have 2 options to configure a value:
+
+1. using [with][steps-with-url] field. (This should be `kebab-case`)
+2. using [env][steps-env-url] field. (This should be `UPPER_CASE` and prefix with application name and `__`)
+    - Example: `EXAMPLE_TS__NAME`
+
+[steps-with-url]: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepswith
+[steps-env-url]: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsenv
 
 ### Name
 
-`name` is a printing name.
+`name` is a printing name (default is **example**).
 
-## Environments
+| Input | Environment | Alternative Environment |
+| ----- | ----------- | ----------------------- |
+| name  | NAME        | EXAMPLE_TS__NAME        |
 
-A environment parsed to action using `env` field in **steps** objects.
+### Dryrun
 
-### Dryrun mode
+`dryrun` will enabled dry-run mode instead of running actual command.
 
-`EXAMPLE_TS__DRYRUN` will enabled dry-run mode instead of running actual command.
-(alternatively, you can use `DRYRUN` as well).
+| Input  | Environment | Alternative Environment |
+| ------ | ----------- | ----------------------- |
+| dryrun | DRYRUN      | EXAMPLE_TS__DRYRUN      |
 
 ## Source code
 
-[here](https://github.com/cognius/github-actions/tree/v2/.actions/src/example-ts)
+> [github-actions-private#action/example-ts][source-code-url]
+
+If you cannot open source code, meaning you don't have permission to open it.
+
+[source-code-url]: https://github.com/cognius/github-actions-private/tree/main/actions/src/example-ts
