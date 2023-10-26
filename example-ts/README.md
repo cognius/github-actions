@@ -21,10 +21,9 @@ jobs:
   job:
     runs-on: ubuntu-latest
     steps:
-      - name: Typescript Example action
-        uses: cognius/github-actions/example-ts@v2
+      - uses: cognius/github-actions/example-ts@v3
         with:
-            example: hello world
+            name: example
         env:
             EXAMPLE_TS__DRYRUN: true
 ```
@@ -33,9 +32,9 @@ jobs:
 
 A input values parsed to action using `with` field in **steps** objects.
 
-### Example
+### Name
 
-`example` is a example input.
+`name` is a printing name.
 
 ## Environments
 
@@ -43,7 +42,8 @@ A environment parsed to action using `env` field in **steps** objects.
 
 ### Dryrun mode
 
-`DRYRUN` will enabled dry-run mode instead of running actual code.
+`EXAMPLE_TS__DRYRUN` will enabled dry-run mode instead of running actual command.
+(alternatively, you can use `DRYRUN` as well).
 
 ## Source code
 
