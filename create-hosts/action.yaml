@@ -1,10 +1,14 @@
-name: Typescript Example
-description: Example actions written on Typescript
+name: Create hosts
+description: create hosts mapping to input ip
 author: Kamontat Chantrachirathumrong
 
 inputs:
-  name:
-    description: example name
+  hosts:
+    description: list of host string separated by comma or new-line
+    required: true
+  ip:
+    description: target ip-address
+    default: 127.0.0.1
 
 # outputs:
 #   output:
@@ -12,6 +16,5 @@ inputs:
 
 runs:
   using: node20
-  pre: pre.js
   main: index.js
   post: post.js
