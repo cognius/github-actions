@@ -1,46 +1,55 @@
 #!/usr/bin/env bash
 
-_git_tag="${GIT_TAG:-${TAG_NAME:?}}"
-_app_name="${APP_NAME:-$COMPONENT}"
-_app_path="${APP_PATH:-}"
+_app_version="${GIT_TAG:-${TAG_NAME:-${APP_VERSION:?}}}"
 
-__note="/tmp/RELEASE_NOTE.md"
+_token="${GH_TOKEN:-${GITHUB_TOKEN:-${GITHUB_DEFAULT_TOKEN:?}}}"
+_repo="${GITHUB_REPOSITORY:?}"
+
+main() {
+  if ! command -v gh >/dev/null; then
+    printf "[ERR] cannot create comments because Github Cli is missing\n" >&2
+    exit 1
+  fi
+  if [[ "$_app_version" =~ ^sha- ]]; then
+    printf "[INF] skipped create development version (%s)" "$_app_version" >&2
+    return 0
+  fi
+
+  local formatted_date
+  formatted_date="$(date +"%Y-%m-%d")"
+  local args=("release" "create" "$_app_version")
+  args+=("--repo" "$_repo")
+  args+=("--generate-notes")
+  args+=("--title" "$_app_version ($formatted_date)")
+
+  local last_version
+  last_version="$(_last_version)"
+  if test -n "$last_version"; then
+    args+=("--notes-start-tag" "$last_version")
+  fi
+
+  GITHUB_TOKEN="$_token" _exec gh "${args[@]}"
+}
+
+_last_version() {
+  local prefix
+  prefix="$(echo "$_app_version" | grep -oE '^[^0-9]*' | head -n1)"
+  local head
+  head="$(git rev-list --tags --max-count=1)"
+  if ! git describe \
+    --abbrev=0 --match "$prefix*" --tags "$head" 2>/dev/null; then
+    printf ''
+  fi
+}
 
 _exec() {
   printf "$ %s\n" "$*"
-  if test -z "$DRY_RUN"; then
+  if test -z "$DRYRUN"; then
     "$@"
   fi
 }
 
-## Create git tag on local
-_exec git tag "$_git_tag"
+main
 
-## Generate release note
-if command -v git-chglog >/dev/null; then
-  __tmp="/tmp/__RELEASE_NOTE.md"
-  __chglog_args=()
-
-  test -n "$_app_path" &&
-    __chglog_args+=(--path "$_app_path")
-  test -n "$_app_name" &&
-    __chglog_args+=(--tag-filter-pattern "^$_app_name/v")
-  __chglog_args+=(--output "$__tmp")
-  __chglog_args+=("$_git_tag")
-
-  _exec git-chglog "${__chglog_args[@]}"
-  echo "$_git_tag" >"$__note"
-  echo "" >>"$__note"
-  tail -n +3 "$__tmp" >>"$__note"
-
-  unset __tmp
-  unset __chglog_args
-fi
-
-## Upload git tag to Github Release
-if command -v hub >/dev/null; then
-  _exec hub release create --file "$__note" "$_git_tag"
-fi
-
-unset _git_tag _app_name _app_path
-unset __note
+unset _app_version
+unset _token _repo
