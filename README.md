@@ -7,4 +7,6 @@
 > please visited [v2-branch](https://github.com/cognius/github-actions/tree/v2)
 
 A collection of Shared Github Actions. 
-This is a compiled version of `cognius/github-actions-private` repository.
+This is a compiled version of [cognius/github-actions-private][gh-gh-actions-private-url] repository.
+
+[gh-gh-actions-private-url]: https://github.com/cognius/github-actions-private
